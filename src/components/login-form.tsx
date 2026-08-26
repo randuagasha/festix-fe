@@ -29,7 +29,7 @@ export function LoginForm({
           <div className="flex items-center">
             <FieldLabel className="font-sans" htmlFor="password">Password</FieldLabel>
             <a
-              href="#"
+              href="/auth/forgot-password"
               className="ml-auto font-sans text-primary text-sm underline-offset-4 hover:underline"
             >
               Lupa Password?

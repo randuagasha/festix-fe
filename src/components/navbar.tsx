@@ -93,7 +93,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/auth/login">
+            <Link href="/auth/login ">
               <Button
                 variant="secondary"
                 className="py-auto px-8 ml-8 bg-primary font-sans text-primary-foreground hover:bg-primary/80"
