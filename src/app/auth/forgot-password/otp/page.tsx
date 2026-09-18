@@ -1,5 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react";
-import Link from "next/link"
+import Link from "next/link";
+import { Suspense } from "react";
 import { OtpForm } from "@/components/otp-form";
 
 export default function OtpPage() {
@@ -18,7 +19,9 @@ export default function OtpPage() {
           </Link>
         </div>
 
-        <OtpForm />
+        <Suspense>
+          <OtpForm />
+        </Suspense>
       </div>
     </div>
   );

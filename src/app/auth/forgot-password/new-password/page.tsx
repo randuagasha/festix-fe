@@ -1,4 +1,5 @@
 import { GalleryVerticalEnd } from "lucide-react";
+import { Suspense } from "react";
 
 import { NewPasswordForm } from "@/components/new-password-form";
 import Link from "next/link";
@@ -19,7 +20,9 @@ export default function NewPasswordPage() {
           </Link>
         </div>
 
-        <NewPasswordForm />
+        <Suspense>
+          <NewPasswordForm />
+        </Suspense>
       </div>
     </div>
   );
