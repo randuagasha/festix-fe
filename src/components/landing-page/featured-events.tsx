@@ -5,13 +5,33 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
+interface TicketType {
+  id: string;
+  eventId: string;
+  name: string;
+  price: string;
+  quota: number;
+  availableQuota: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface EventCategory {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Event {
   id: string;
   title: string;
-  image: string;
   location: string;
-  date: string;
-  price: number;
+  coverImageUrl: string;
+  startDatetime: string;
+  category: EventCategory;
+  ticketTypes: TicketType[];
 }
 
 interface FeaturedEventsProps {
@@ -47,13 +67,13 @@ export function FeaturedEvents({ events = [] }: FeaturedEventsProps) {
               <Link
                 key={event.id}
                 href={`/events/${event.id}`}
-                className="group overflow-hidden rounded-2xl border bg-background transition-shadow hover:shadow-lg"
-              >
-                <div className="aspect-4/3 overflow-hidden bg-muted">
+                className="group overflow-hidden rounded-2xl border bg-background transition-shadow hover:shadow-lg">
+                <div className="relative aspect-4/3 overflow-hidden bg-muted">
                   <Image
-                    src={event.image}
+                    src={event.coverImageUrl}
                     alt={event.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
 
@@ -69,11 +89,25 @@ export function FeaturedEvents({ events = [] }: FeaturedEventsProps) {
                   <div className="mt-5 flex items-end justify-between">
                     <div>
                       <p className="text-xs text-muted-foreground">From</p>
-                      <p className="font-sans font-semibold">${event.price}</p>
+                      <p className="font-sans font-semibold">
+                        Rp{" "}
+                        {Math.min(
+                          ...event.ticketTypes.map((ticket) =>
+                            Number(ticket.price),
+                          ),
+                        ).toLocaleString("id-ID")}
+                      </p>
                     </div>
 
                     <p className="text-sm text-muted-foreground">
-                      {event.date}
+                      {new Date(event.startDatetime).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}
                     </p>
                   </div>
                 </div>

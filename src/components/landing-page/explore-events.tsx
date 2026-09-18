@@ -5,19 +5,27 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-// tinggal lu sambungin ya eki
+
+interface EventCategory {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Event {
   id: string;
   title: string;
-  image: string;
-  category: string;
+  coverImageUrl: string;
+  category: EventCategory;
   location: string;
-  date: string;
+  startDatetime: string;
 }
 
 interface ExploreEventsProps {
   events?: Event[];
-  categories?: string[];
+  categories?: EventCategory[];
 }
 
 export function ExploreEvents({
@@ -29,7 +37,7 @@ export function ExploreEvents({
   const filteredEvents =
     activeCategory === "All"
       ? events
-      : events.filter((event) => event.category === activeCategory);
+      : events.filter((event) => event.category.name === activeCategory);
 
   return (
     <section className="bg-[#eeeeee] py-24">
@@ -52,21 +60,17 @@ export function ExploreEvents({
           <Button
             variant={activeCategory === "All" ? "default" : "outline"}
             onClick={() => setActiveCategory("All")}
-            className="shrink-0 font-sans"
-          >
+            className="shrink-0 font-sans">
             All
           </Button>
 
           {categories.map((category) => (
             <Button
-              key={category}
-              variant={
-                activeCategory === category ? "default" : "outline"
-              }
-              onClick={() => setActiveCategory(category)}
-              className="shrink-0 font-sans"
-            >
-              {category}
+              key={category.id}
+              variant={activeCategory === category.name ? "default" : "outline"}
+              onClick={() => setActiveCategory(category.name)}
+              className="shrink-0 font-sans">
+              {category.name}
             </Button>
           ))}
         </div>
@@ -77,19 +81,19 @@ export function ExploreEvents({
               <Link
                 key={event.id}
                 href={`/events/${event.id}`}
-                className="group overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-lg"
-              >
-                <div className="aspect-4/5 overflow-hidden bg-muted">
+                className="group overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-lg">
+                <div className="relative aspect-4/5 overflow-hidden bg-muted">
                   <Image
-                    src={event.image}
+                    src={event.coverImageUrl}
                     alt={event.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
 
                 <div className="p-5">
                   <p className="text-xs font-medium uppercase tracking-wider text-primary">
-                    {event.category}
+                    {event.category.name}
                   </p>
 
                   <h3 className="mt-2 font-heading text-lg font-semibold">
@@ -101,7 +105,11 @@ export function ExploreEvents({
                   </p>
 
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {event.date}
+                    {new Date(event.startDatetime).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </p>
                 </div>
               </Link>
