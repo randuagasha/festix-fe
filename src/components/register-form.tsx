@@ -122,12 +122,13 @@ export function RegisterForm({
         return;
       }
 
-      toast.success("Berhasil Register Akun, silahkan Login!", {
+      toast.success("Berhasil Register Akun! Silakan verifikasi email kamu.", {
         position: "top-center",
       });
 
+      const verifyEmail = data.email || formData.email;
       resetForm();
-      router.push("/auth/login");
+      router.push(`/auth/verify-email?email=${encodeURIComponent(verifyEmail)}`);
     } catch {
       toast.error("Failed to Create an Account, Please try again!", {
         position: "top-center",

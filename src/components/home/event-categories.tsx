@@ -1,21 +1,11 @@
-import type { EventCategory } from "@/components/home/home-page";
-
 type EventCategoriesProps = {
-  selected: EventCategory;
-  onSelect: (category: EventCategory) => void;
+  categories: string[];
+  selected: string;
+  onSelect: (category: string) => void;
 };
 
-const categories: EventCategory[] = [
-  "All",
-  "Music",
-  "Festival",
-  "Sports",
-  "Comedy",
-  "Theater",
-  "Workshop",
-];
-
 export function EventCategories({
+  categories,
   selected,
   onSelect,
 }: EventCategoriesProps) {

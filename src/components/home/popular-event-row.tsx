@@ -50,9 +50,11 @@ export function PopularEventRow({
           </h3>
         </Link>
 
-        <p className="mt-0.5 truncate font-sans text-sm text-muted-foreground">
-          {event.artist}
-        </p>
+        {event.artist && (
+          <p className="mt-0.5 truncate font-sans text-sm text-muted-foreground">
+            {event.artist}
+          </p>
+        )}
 
         <div className="mt-2 flex items-center gap-1.5 font-sans text-xs text-muted-foreground">
           <MapPin className="size-3.5" />

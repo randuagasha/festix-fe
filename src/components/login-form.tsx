@@ -70,6 +70,14 @@ export function LoginForm({
       const data = await response.json();
 
       if (!response.ok) {
+        if (data.message === "Email not Verified") {
+          toast.error("Email belum diverifikasi. Silakan verifikasi terlebih dahulu.", {
+            position: "top-center",
+          });
+          router.push(`/auth/verify-email?email=${encodeURIComponent(formData.email)}`);
+          return;
+        }
+
         toast.error(data.message || "Login failed", {
           position: "top-center",
         });

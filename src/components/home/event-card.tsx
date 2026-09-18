@@ -56,9 +56,11 @@ export function EventCard({ event }: EventCardProps) {
             {event.title}
           </h3>
 
-          <p className="mt-1 font-sans text-sm text-white/80">
-            {event.artist}
-          </p>
+          {event.artist && (
+            <p className="mt-1 font-sans text-sm text-white/80">
+              {event.artist}
+            </p>
+          )}
         </div>
       </div>
 
