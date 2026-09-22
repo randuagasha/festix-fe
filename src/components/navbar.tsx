@@ -1,19 +1,13 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { API_URL } from "../../api";
 
 export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +20,32 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
+
+    async function verifyAuth() {
+      try {
+        const res = await fetch(`${API_URL}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          setIsAuthenticated(true);
+        } else {
+          Cookies.remove("token");
+          setIsAuthenticated(false);
+        }
+      } catch {
+        setIsAuthenticated(Boolean(token));
+      }
+    }
+
+    verifyAuth();
   }, []);
 
   return (
@@ -65,35 +85,17 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
           >
             Contact
           </Link>
-          {isLoggedIn ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-full border-none bg-transparent p-0 hover:bg-transparent focus:outline-none">
-                <Button
-                  variant="ghost"
-                  className="relative h-8 w-8 rounded-full p-0"
-                >
-                  <Avatar>
-                    <AvatarImage src="/avatars/01.png" alt="@user" />
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel className="font-normal">
-                  <p className="text-sm font-medium leading-none">John Doe</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    johndoe@example.com
-                  </p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {isAuthenticated ? (
+            <Link href="/customers/home">
+              <Button
+                variant="secondary"
+                className="py-auto px-8 ml-8 bg-primary font-sans text-primary-foreground hover:bg-primary/80"
+              >
+                Home
+              </Button>
+            </Link>
           ) : (
-            <Link href="/auth/login ">
+            <Link href="/auth/login">
               <Button
                 variant="secondary"
                 className="py-auto px-8 ml-8 bg-primary font-sans text-primary-foreground hover:bg-primary/80"

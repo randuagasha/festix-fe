@@ -2,13 +2,15 @@
 
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export function ProfileDangerZone() {
+  const router = useRouter();
+
   const handleLogout = () => {
-    toast("Logout", {
-      description: "Logic logout akan dihubungkan ke backend.",
-    });
+    Cookies.remove("token");
+    router.push("/");
   };
 
   return (
