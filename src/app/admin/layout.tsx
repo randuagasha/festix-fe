@@ -1,8 +1,8 @@
 "use client";
 
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import { Separator } from "@/components/ui/separator";
+import { AdminTopbar } from "@/components/admin/admin-topbar";
 
 export default function AdminLayout({
   children,
@@ -12,13 +12,9 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <SidebarInset>
-        <header className="flex h-14 items-center gap-3 border-b px-5 md:hidden">
-          <SidebarTrigger />
-          <Separator orientation="vertical" className="h-5" />
-          <span className="font-heading text-sm font-semibold">Tixora Admin</span>
-        </header>
-        <div className="flex-1 px-5 py-6 md:px-8 md:py-8">{children}</div>
+      <SidebarInset className="min-w-0 bg-background">
+        <AdminTopbar />
+        <main className="flex-1 px-4 py-5 md:px-6 md:py-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

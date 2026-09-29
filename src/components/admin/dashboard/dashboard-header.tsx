@@ -1,10 +1,14 @@
 export function DashboardHeader() {
   return (
-    <div>
-      <h1 className="font-heading text-2xl font-bold sm:text-3xl">Dashboard</h1>
-      <p className="mt-1 font-sans text-sm text-muted-foreground">
-        Platform overview — events, orders, and ticket activity.
-      </p>
+    <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 className="font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+          Platform Overview
+        </h2>
+        <p className="font-sans text-xs text-muted-foreground sm:text-sm">
+          Realtime metrics across events, revenue, orders, and ticket validations.
+        </p>
+      </div>
     </div>
   );
 }

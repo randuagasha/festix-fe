@@ -3,10 +3,12 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { LayoutDashboard } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
@@ -26,28 +28,31 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar>
-      <SidebarHeader className="px-5 py-5">
+    <Sidebar className="border-r border-border bg-card">
+      <SidebarHeader className="flex h-14 flex-row items-center border-b border-border px-4">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-primary">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-primary shadow-xs">
             <span className="font-heading text-sm font-bold text-primary-foreground">
               T
             </span>
           </div>
-          <div>
-            <p className="font-heading text-base font-bold tracking-tight">
+          <div className="flex flex-col">
+            <span className="font-heading text-sm font-bold tracking-tight text-foreground">
               Tixora
-            </p>
-            <p className="font-sans text-[11px] text-muted-foreground">
-              Admin Panel
-            </p>
+            </span>
+            <span className="font-sans text-[10px] text-muted-foreground">
+              Admin Platform
+            </span>
           </div>
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 pt-3">
         <SidebarGroup>
-          <SidebarGroupContent>
+          <SidebarGroupLabel className="px-3 font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/80">
+            Overview
+          </SidebarGroupLabel>
+          <SidebarGroupContent className="mt-1">
             <SidebarMenu>
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -58,10 +63,15 @@ export function AdminSidebar() {
                     <SidebarMenuButton
                       isActive={isActive}
                       tooltip={item.label}
-                      className="h-11 gap-3 px-4 text-[15px]"
+                      className={cn(
+                        "h-9 gap-3 rounded-lg px-3 font-sans text-xs font-medium transition-colors",
+                        isActive
+                          ? "bg-primary/10 font-semibold text-primary hover:bg-primary/15 hover:text-primary [&>svg]:text-primary"
+                          : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                      )}
                       render={<Link href={item.href} />}
                     >
-                      <Icon className="size-5" />
+                      <Icon className="size-4" />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

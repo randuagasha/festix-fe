@@ -99,7 +99,7 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <DashboardHeader />
 
       <DashboardSummaryCards
@@ -109,7 +109,13 @@ export default function AdminDashboardPage() {
 
       <RevenueOrdersSection
         monthly={data.orders.monthly}
-        byStatus={data.orders.byStatus}
+        totalRevenue={data.orders.totalRevenue}
+        paidOrders={data.summary.paidOrders}
+      />
+
+      <TicketSnapshot
+        tickets={data.tickets}
+        paymentStatus={data.orders.byStatus}
       />
 
       <EventAnalyticsSection
@@ -117,9 +123,7 @@ export default function AdminDashboardPage() {
         byCategory={data.events.byCategory}
       />
 
-      <TicketSnapshot tickets={data.tickets} />
-
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         <RecentEvents events={data.recent.events} />
         <RecentOrders orders={data.recent.orders} />
       </div>

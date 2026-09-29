@@ -1,30 +1,28 @@
 "use client";
 
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import type { MonthlyOrderEntry, OrderStatusEntry } from "./dashboard-types";
+import type { MonthlyOrderEntry } from "./dashboard-types";
 import {
-  formatMonth,
   formatShortMonth,
   formatIDR,
   formatCompactIDR,
   formatNumber,
-  formatPaymentStatus,
-  getPaymentStatusVariant,
 } from "./dashboard-formatters";
-import { Badge } from "@/components/ui/badge";
+import { TrendingUp, ShoppingCart } from "lucide-react";
 
 const revenueChartConfig: ChartConfig = {
   revenue: {
@@ -36,119 +34,179 @@ const revenueChartConfig: ChartConfig = {
 const ordersChartConfig: ChartConfig = {
   orders: {
     label: "Paid Orders",
-    color: "var(--color-chart-2)",
+    color: "var(--color-chart-1)",
   },
 };
 
 export function RevenueOrdersSection({
   monthly,
-  byStatus,
+  totalRevenue,
+  paidOrders,
 }: {
   monthly: MonthlyOrderEntry[];
-  byStatus: OrderStatusEntry[];
+  totalRevenue: number;
+  paidOrders: number;
 }) {
   const chartData = monthly.map((item) => ({
     month: formatShortMonth(item.month),
-    fullMonth: formatMonth(item.month),
     revenue: item.revenue,
     orders: item.orders,
   }));
 
   return (
-    <div className="space-y-4">
-      <div className="grid gap-4 lg:grid-cols-2">
-        {/* Revenue Trend */}
-        <Card className="rounded-2xl">
-          <CardHeader>
-            <CardTitle>Revenue Trend</CardTitle>
-            <CardDescription>Monthly revenue over the last 6 months</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={revenueChartConfig} className="h-64 w-full">
-              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-chart-1)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="var(--color-chart-1)" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(val: number) => formatCompactIDR(val)}
-                  width={60}
-                />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      formatter={(value) => formatIDR(Number(value))}
-                    />
-                  }
-                />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="var(--color-chart-1)"
-                  strokeWidth={2}
-                  fill="url(#fillRevenue)"
-                />
-              </AreaChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-
-        {/* Orders Trend */}
-        <Card className="rounded-2xl">
-          <CardHeader>
-            <CardTitle>Paid Orders Trend</CardTitle>
-            <CardDescription>Monthly order volume over the last 6 months</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={ordersChartConfig} className="h-64 w-full">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} width={40} />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      formatter={(value) => `${formatNumber(Number(value))} orders`}
-                    />
-                  }
-                />
-                <Bar
-                  dataKey="orders"
-                  fill="var(--color-chart-2)"
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <TrendingUp className="size-3.5" />
+          </div>
+          <h2 className="font-heading text-sm font-semibold tracking-tight text-foreground">
+            Revenue & Order Trends
+          </h2>
+          <span className="font-sans text-xs text-muted-foreground">
+            (Last 6 Months)
+          </span>
+        </div>
       </div>
 
-      {/* Payment Status Breakdown */}
-      <Card className="rounded-2xl">
-        <CardContent className="flex flex-wrap items-center justify-between gap-4 py-4">
-          <span className="font-heading text-sm font-semibold">Payment Status</span>
-          <div className="flex flex-wrap items-center gap-3">
-            {byStatus.length === 0 ? (
-              <span className="text-xs text-muted-foreground">No payment records</span>
-            ) : (
-              byStatus.map((item) => (
-                <div key={item.status} className="flex items-center gap-2 text-sm">
-                  <Badge variant={getPaymentStatusVariant(item.status)}>
-                    {formatPaymentStatus(item.status)}
-                  </Badge>
-                  <span className="font-mono font-medium">{formatNumber(item.count)}</span>
-                </div>
-              ))
-            )}
+      <div className="grid gap-3 lg:grid-cols-2">
+        {/* Revenue Trend Chart */}
+        <div className="rounded-xl border border-border/80 bg-card p-4 shadow-xs ring-1 ring-foreground/5 transition-all hover:shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="font-sans text-xs font-medium text-muted-foreground">
+                Total Revenue
+              </p>
+              <p className="font-heading text-xl font-bold tracking-tight text-foreground tabular-nums">
+                {formatCompactIDR(totalRevenue)}
+              </p>
+            </div>
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <TrendingUp className="size-4" />
+            </div>
           </div>
-        </CardContent>
-      </Card>
+
+          <ChartContainer config={revenueChartConfig} className="h-52 w-full font-sans">
+            <AreaChart
+              data={chartData}
+              margin={{ top: 10, right: 10, left: -5, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="fillRevenueGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid
+                vertical={false}
+                stroke="var(--border)"
+                strokeDasharray="3 3"
+                opacity={0.6}
+              />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{
+                  fill: "var(--muted-foreground)",
+                  fontSize: 11,
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(val: number) => formatCompactIDR(val)}
+                width={60}
+                tick={{
+                  fill: "var(--muted-foreground)",
+                  fontSize: 10,
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(value) => formatIDR(Number(value))}
+                  />
+                }
+              />
+              <Area
+                type="monotone"
+                dataKey="revenue"
+                stroke="var(--primary)"
+                strokeWidth={2.5}
+                fill="url(#fillRevenueGradient)"
+                activeDot={{ r: 4, fill: "var(--primary)" }}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </div>
+
+        {/* Paid Orders Trend Chart */}
+        <div className="rounded-xl border border-border/80 bg-card p-4 shadow-xs ring-1 ring-foreground/5 transition-all hover:shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="font-sans text-xs font-medium text-muted-foreground">
+                Paid Orders
+              </p>
+              <p className="font-heading text-xl font-bold tracking-tight text-foreground tabular-nums">
+                {formatNumber(paidOrders)}
+              </p>
+            </div>
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <ShoppingCart className="size-4" />
+            </div>
+          </div>
+
+          <ChartContainer config={ordersChartConfig} className="h-52 w-full font-sans">
+            <BarChart
+              data={chartData}
+              margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
+            >
+              <CartesianGrid
+                vertical={false}
+                stroke="var(--border)"
+                strokeDasharray="3 3"
+                opacity={0.6}
+              />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{
+                  fill: "var(--muted-foreground)",
+                  fontSize: 11,
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={40}
+                tick={{
+                  fill: "var(--muted-foreground)",
+                  fontSize: 10,
+                  fontFamily: "var(--font-sans)",
+                }}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(value) => `${formatNumber(Number(value))} orders`}
+                  />
+                }
+              />
+              <Bar
+                dataKey="orders"
+                fill="var(--primary)"
+                radius={[4, 4, 0, 0]}
+                maxBarSize={36}
+              />
+            </BarChart>
+          </ChartContainer>
+        </div>
+      </div>
     </div>
   );
 }
