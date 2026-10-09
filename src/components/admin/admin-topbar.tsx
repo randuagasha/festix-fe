@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { ChevronDown, LogOut, User as UserIcon } from "lucide-react";
@@ -19,8 +19,33 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getMe, type CurrentUser } from "@/lib/auth-api";
 
+const pageTitles: Record<string, string> = {
+  "/admin/dashboard": "Dashboard",
+  "/admin/events": "Event Management",
+  "/admin/organizers": "Organizer Applications",
+  "/admin/users": "User Management",
+  "/admin/orders": "Orders & Transactions",
+  "/admin/tickets": "Ticket Management",
+  "/admin/categories": "Category Management",
+  "/admin/staff": "Staff & Access",
+  "/admin/audit-logs": "Audit Logs",
+};
+
+function getPageTitle(pathname: string): string {
+  if (pageTitles[pathname]) return pageTitles[pathname];
+
+  for (const [route, title] of Object.entries(pageTitles)) {
+    if (route !== "/admin/dashboard" && pathname.startsWith(route)) {
+      return title;
+    }
+  }
+
+  return "Admin";
+}
+
 export function AdminTopbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<CurrentUser | null>(null);
 
   useEffect(() => {
@@ -50,6 +75,7 @@ export function AdminTopbar() {
     user?.fullName || (user?.email ? user.email.split("@")[0] : "Admin");
   const displayRole = user?.role || "ADMIN";
   const userInitial = displayName.charAt(0).toUpperCase() || "A";
+  const pageTitle = getPageTitle(pathname);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-border bg-card/95 px-4 backdrop-blur-sm md:px-6">
@@ -58,7 +84,7 @@ export function AdminTopbar() {
         <Separator orientation="vertical" className="h-4 md:hidden" />
         <div className="flex items-center gap-2">
           <h1 className="font-heading text-sm font-semibold tracking-tight md:text-base">
-            Dashboard
+            {pageTitle}
           </h1>
           <span className="hidden rounded-full bg-primary/10 px-2 py-0.5 font-sans text-[11px] font-medium text-primary sm:inline-block">
             Admin
