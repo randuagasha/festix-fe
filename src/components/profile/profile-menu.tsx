@@ -1,6 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { API_URL } from "../../../api";
 import {
   Bell,
+  Building2,
   ChevronRight,
   CreditCard,
   HelpCircle,
@@ -10,7 +16,7 @@ import {
   UserRound,
 } from "lucide-react";
 
-const menuItems = [
+const baseMenuItems = [
   {
     title: "Personal Information",
     description: "Nama, email, lokasi, dan informasi akun",
@@ -56,6 +62,45 @@ const menuItems = [
 ];
 
 export function ProfileMenu() {
+  const [isOrganizer, setIsOrganizer] = useState(false);
+
+  useEffect(() => {
+    async function checkOrganizer() {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${API_URL}/organizer/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === "APPROVED") {
+            setIsOrganizer(true);
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    checkOrganizer();
+  }, []);
+
+  const menuItems = [
+    ...(isOrganizer
+      ? [
+          {
+            title: "Organizer Workspace",
+            description: "Kelola event, tiket, check-in, dan tim kamu",
+            icon: Building2,
+            href: "/organizer/dashboard",
+            badge: "Approved",
+          },
+        ]
+      : []),
+    ...baseMenuItems,
+  ];
+
   return (
     <section>
       <div className="mb-4">
@@ -85,9 +130,16 @@ export function ProfileMenu() {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="font-sans text-sm font-semibold">
-                  {item.title}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="font-sans text-sm font-semibold">
+                    {item.title}
+                  </p>
+                  {(item as any).badge && (
+                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 font-sans text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                      {(item as any).badge}
+                    </span>
+                  )}
+                </div>
 
                 <p className="mt-0.5 truncate font-sans text-xs text-muted-foreground">
                   {item.description}

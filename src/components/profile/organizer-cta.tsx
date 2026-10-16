@@ -102,6 +102,14 @@ export function OrganizerCta() {
             Become an Organizer
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </Link>
+        ) : profile?.status === "APPROVED" ? (
+          <Link
+            href="/organizer/dashboard"
+            className="group flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3.5 font-sans text-sm font-semibold text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          >
+            Go to Organizer Workspace
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         ) : (
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger
@@ -125,20 +133,6 @@ export function OrganizerCta() {
                     </div>
                     <DialogDescription>
                       Your application is currently being reviewed.
-                    </DialogDescription>
-                  </>
-                )}
-
-                {profile?.status === "APPROVED" && (
-                  <>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="size-5 text-green-500" />
-                      <span className="font-sans text-sm font-medium">
-                        Status: Approved
-                      </span>
-                    </div>
-                    <DialogDescription>
-                      Your organizer application has been approved.
                     </DialogDescription>
                   </>
                 )}
