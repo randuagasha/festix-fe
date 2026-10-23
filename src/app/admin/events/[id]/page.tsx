@@ -276,7 +276,7 @@ export default function EventDetailPage({
               <CardTitle className="text-sm font-semibold">Ticket Types</CardTitle>
             </CardHeader>
             <CardContent>
-              {event.ticketTypes.length === 0 ? (
+              {(!event.ticketTypes || event.ticketTypes.length === 0) ? (
                 <p className="text-xs text-muted-foreground">No ticket types created yet.</p>
               ) : (
                 <div className="space-y-3">

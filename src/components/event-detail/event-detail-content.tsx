@@ -20,12 +20,14 @@ import {
   ChevronRight,
   ArrowLeft,
   XCircle,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { HomeFooter } from "@/components/home/home-footer";
 import { EventDetailSkeleton } from "@/components/event-detail/event-detail-skeleton";
+import { BuyTicketsModal } from "@/components/event-detail/buy-tickets-modal";
 import { API_URL } from "../../../api";
 import type { PublicEventDetail } from "@/types/event-detail";
 import { toast } from "sonner";
@@ -74,6 +76,7 @@ export function EventDetailContent() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState<boolean>(false);
+  const [showBuyModal, setShowBuyModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (!eventId || !eventId.trim()) {
@@ -239,7 +242,8 @@ export function EventDetailContent() {
     "Festix Verified Organizer";
 
   // Calculate lowest ticket price
-  const prices = event.ticketTypes
+  const ticketTypes = event.ticketTypes ?? [];
+  const prices = ticketTypes
     .map((tt) => (typeof tt.price === "string" ? parseFloat(tt.price) : tt.price))
     .filter((p) => !isNaN(p));
   const minPrice = prices.length > 0 ? Math.min(...prices) : null;
@@ -500,14 +504,14 @@ export function EventDetailContent() {
                   </div>
 
                   <CardContent className="p-5 space-y-4">
-                    {event.ticketTypes.length === 0 ? (
+                    {ticketTypes.length === 0 ? (
                       <div className="py-8 text-center text-muted-foreground">
                         <Ticket className="mx-auto size-8 opacity-40 mb-2" />
                         <p className="font-sans text-xs">Informasi tiket belum tersedia untuk acara ini.</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        {event.ticketTypes.map((tier) => {
+                        {ticketTypes.map((tier) => {
                           const isAvailable = tier.availableQuota > 0;
                           return (
                             <div
@@ -558,6 +562,16 @@ export function EventDetailContent() {
                         E-tiket terbit otomatis ke akun Anda setelah pembayaran tervalidasi di sistem.
                       </p>
                     </div>
+
+                    {ticketTypes.some((tt) => tt.availableQuota > 0) && (
+                      <Button
+                        onClick={() => setShowBuyModal(true)}
+                        className="w-full gap-2 rounded-2xl font-sans text-sm font-semibold h-11"
+                      >
+                        <ShoppingCart className="size-4" />
+                        Beli Tiket
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
 
@@ -588,6 +602,12 @@ export function EventDetailContent() {
       </main>
 
       <HomeFooter />
+
+      <BuyTicketsModal
+        event={event}
+        open={showBuyModal}
+        onOpenChange={setShowBuyModal}
+      />
     </div>
   );
 }
