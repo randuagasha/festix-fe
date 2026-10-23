@@ -40,7 +40,7 @@ export function HomeFooter() {
             </Link>
 
             <Link
-              href="/tickets"
+              href="/customers/my-tickets"
               className="text-muted-foreground hover:text-foreground"
             >
               My Tickets

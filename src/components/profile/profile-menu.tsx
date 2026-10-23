@@ -27,7 +27,7 @@ const baseMenuItems = [
     title: "My Tickets",
     description: "Lihat tiket dan riwayat event kamu",
     icon: Ticket,
-    href: "/tickets",
+    href: "/customers/my-tickets",
   },
   {
     title: "Payment Methods",

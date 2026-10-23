@@ -50,7 +50,7 @@ export function HomeNavbar() {
           </Link>
 
           <Link
-            href="/tickets"
+            href="/customers/my-tickets"
             className="font-sans text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             My Tickets
@@ -110,7 +110,7 @@ export function HomeNavbar() {
             </Link>
 
             <Link
-              href="/tickets"
+              href="/customers/my-tickets"
               onClick={() => setMobileOpen(false)}
               className="border-b py-3 font-sans text-sm"
             >
