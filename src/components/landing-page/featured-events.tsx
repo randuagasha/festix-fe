@@ -53,7 +53,7 @@ export function FeaturedEvents({ events = [] }: FeaturedEventsProps) {
             </p>
           </div>
 
-          <Link href="/events">
+          <Link href="/customers/events">
             <Button variant="ghost" className="font-sans">
               Lihat Semua
               <ArrowRight className="ml-2 h-4 w-4" />

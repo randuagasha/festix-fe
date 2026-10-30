@@ -39,7 +39,7 @@ export function UpcomingEvents({
             </p>
           </div>
 
-          <Link href="/events">
+          <Link href="/customers/events">
             <Button variant="ghost" className="font-sans">
               View Schedule
               <ArrowRight className="ml-2 h-4 w-4" />

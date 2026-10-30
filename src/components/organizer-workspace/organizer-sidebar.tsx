@@ -122,11 +122,11 @@ export function OrganizerSidebar() {
 
       <SidebarFooter className="border-t border-border p-3">
         <Link
-          href="/profile"
+          href="/"
           className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 font-sans text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
         >
           <ChevronLeft className="size-4 shrink-0" />
-          <span>Back to Profile</span>
+          <span>Back to Home</span>
         </Link>
       </SidebarFooter>
     </Sidebar>

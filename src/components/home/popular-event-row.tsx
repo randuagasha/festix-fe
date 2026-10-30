@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, MapPin } from "lucide-react";
 
-import type { Event } from "@/components/home/home-page";
+import type { Event } from "@/lib/event-types";
 
 type PopularEventRowProps = {
   event: Event;

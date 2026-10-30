@@ -3,11 +3,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { API_URL } from "../../api";
+import { LayoutDashboard } from "lucide-react";
+import { getMe, type CurrentUser } from "@/lib/auth-api";
 
 export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
+  const [user, setUser] = useState<CurrentUser | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,25 +26,12 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   useEffect(() => {
     const token = Cookies.get("token");
-    if (!token) {
-      setIsAuthenticated(false);
-      return;
-    }
+    if (!token) return;
 
     async function verifyAuth() {
-      try {
-        const res = await fetch(`${API_URL}/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          setIsAuthenticated(true);
-        } else {
-          Cookies.remove("token");
-          setIsAuthenticated(false);
-        }
-      } catch {
-        setIsAuthenticated(Boolean(token));
-      }
+      const userData = await getMe();
+      setUser(userData);
+      setIsAuthenticated(Boolean(userData));
     }
 
     verifyAuth();
@@ -74,7 +63,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
             About
           </Link>
           <Link
-            href="/events"
+            href="/customers/events"
             className="text-current font-sans hover:text-blue-300"
           >
             Events
@@ -86,14 +75,28 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
             Contact
           </Link>
           {isAuthenticated ? (
-            <Link href="/customers/home">
-              <Button
-                variant="secondary"
-                className="py-auto px-8 ml-8 bg-primary font-sans text-primary-foreground hover:bg-primary/80"
-              >
-                Home
-              </Button>
-            </Link>
+            <>
+              {user?.role === "ADMIN" && (
+                <Link href="/admin/dashboard">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="gap-1.5 bg-primary font-sans text-primary-foreground hover:bg-primary/80"
+                  >
+                    <LayoutDashboard className="size-3.5" />
+                    Admin Dashboard
+                  </Button>
+                </Link>
+              )}
+              <Link href="/customers/home">
+                <Button
+                  variant="secondary"
+                  className="py-auto px-8 ml-8 bg-primary font-sans text-primary-foreground hover:bg-primary/80"
+                >
+                  Home
+                </Button>
+              </Link>
+            </>
           ) : (
             <Link href="/auth/login">
               <Button

@@ -33,7 +33,7 @@ export function HeroSection() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href="/events">
+              <Link href="/customers/events">
                 <Button size="lg" className="w-full px-7 font-sans sm:w-auto">
                   Explore Events
                   <ArrowRight className="ml-2 h-4 w-4" />

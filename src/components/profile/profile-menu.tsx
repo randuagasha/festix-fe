@@ -16,7 +16,15 @@ import {
   UserRound,
 } from "lucide-react";
 
-const baseMenuItems = [
+type MenuItem = {
+  title: string;
+  description: string;
+  icon: typeof UserRound;
+  href: string;
+  badge?: string;
+};
+
+const baseMenuItems: MenuItem[] = [
   {
     title: "Personal Information",
     description: "Nama, email, lokasi, dan informasi akun",
@@ -61,7 +69,15 @@ const baseMenuItems = [
   },
 ];
 
-export function ProfileMenu() {
+type ProfileMenuProps = {
+  onOpenPersonalInfo?: () => void;
+  onOpenSecurity?: () => void;
+};
+
+export function ProfileMenu({
+  onOpenPersonalInfo,
+  onOpenSecurity,
+}: ProfileMenuProps = {}) {
   const [isOrganizer, setIsOrganizer] = useState(false);
 
   useEffect(() => {
@@ -116,15 +132,11 @@ export function ProfileMenu() {
       <div className="overflow-hidden rounded-3xl border bg-card">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
+          const isPersonalInfo = item.title === "Personal Information";
+          const isSecurity = item.title === "Security";
 
-          return (
-            <Link
-              key={item.title}
-              href={item.href}
-              className={`group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-muted/60 sm:px-6 ${
-                index !== menuItems.length - 1 ? "border-b" : ""
-              }`}
-            >
+          const content = (
+            <>
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                 <Icon className="size-5" />
               </div>
@@ -134,9 +146,9 @@ export function ProfileMenu() {
                   <p className="font-sans text-sm font-semibold">
                     {item.title}
                   </p>
-                  {(item as any).badge && (
+                  {item.badge && (
                     <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 font-sans text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                      {(item as any).badge}
+                      {item.badge}
                     </span>
                   )}
                 </div>
@@ -147,6 +159,46 @@ export function ProfileMenu() {
               </div>
 
               <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+            </>
+          );
+
+          const className = `group flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-muted/60 sm:px-6 ${
+            index !== menuItems.length - 1 ? "border-b" : ""
+          }`;
+
+          if (isPersonalInfo && onOpenPersonalInfo) {
+            return (
+              <button
+                key={item.title}
+                type="button"
+                onClick={onOpenPersonalInfo}
+                className={className}
+              >
+                {content}
+              </button>
+            );
+          }
+
+          if (isSecurity && onOpenSecurity) {
+            return (
+              <button
+                key={item.title}
+                type="button"
+                onClick={onOpenSecurity}
+                className={className}
+              >
+                {content}
+              </button>
+            );
+          }
+
+          return (
+            <Link
+              key={item.title}
+              href={item.href}
+              className={className}
+            >
+              {content}
             </Link>
           );
         })}

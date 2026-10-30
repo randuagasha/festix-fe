@@ -124,7 +124,7 @@ export function ExploreEvents({
         )}
 
         <div className="mt-10 flex justify-center">
-          <Link href="/events">
+          <Link href="/customers/events">
             <Button variant="outline" className="font-sans">
               Explore All Events
               <ArrowRight className="ml-2 h-4 w-4" />

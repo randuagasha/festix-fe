@@ -1,15 +1,17 @@
 "use client";
 
-import { MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 
 type HomeHeroProps = {
   search: string;
   onSearchChange: (value: string) => void;
+  onSearchSubmit: () => void;
 };
 
 export function HomeHero({
   search,
   onSearchChange,
+  onSearchSubmit,
 }: HomeHeroProps) {
   return (
     <section className="border-b">
@@ -38,7 +40,13 @@ export function HomeHero({
               Jakarta, Indonesia
             </div>
 
-            <div className="flex h-14 border bg-background">
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                onSearchSubmit();
+              }}
+              className="flex h-14 border bg-background"
+            >
               <div className="flex min-w-0 flex-1 items-center px-4">
                 <Search className="mr-3 size-5 shrink-0 text-muted-foreground" />
 
@@ -53,13 +61,13 @@ export function HomeHero({
               </div>
 
               <button
-                type="button"
+                type="submit"
                 className="flex w-14 shrink-0 items-center justify-center border-l transition-colors hover:bg-muted"
-                aria-label="Filter events"
+                aria-label="Search events"
               >
-                <SlidersHorizontal className="size-5" />
+                <Search className="size-5" />
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

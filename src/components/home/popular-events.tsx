@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import type { Event } from "@/components/home/home-page";
+import type { Event } from "@/lib/event-types";
 import { PopularEventRow } from "@/components/home/popular-event-row";
 
 type PopularEventsProps = {
@@ -26,7 +26,7 @@ export function PopularEvents({
           </div>
 
           <Link
-            href="/events"
+            href="/customers/events"
             className="flex items-center gap-1 font-sans text-sm font-medium hover:text-primary"
           >
             Explore all
@@ -35,12 +35,17 @@ export function PopularEvents({
         </div>
 
         <div className="border-t">
-          {events.slice(0, 6).map((event) => (
-            <PopularEventRow
-              key={event.id}
-              event={event}
-            />
-          ))}
+          {events.length > 0 ? (
+            events.slice(0, 6).map((event) => (
+              <PopularEventRow key={event.id} event={event} />
+            ))
+          ) : (
+            <div className="border-b py-12 text-center">
+              <p className="font-sans text-sm text-muted-foreground">
+                No popular events found.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -8,7 +8,7 @@ export function HomeFooter() {
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <Link
-              href="/home"
+              href="/customers/home"
               className="flex items-center gap-2 font-heading text-xl font-bold"
             >
               <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
@@ -26,7 +26,7 @@ export function HomeFooter() {
 
           <div className="grid grid-cols-2 gap-x-12 gap-y-3 font-sans text-sm">
             <Link
-              href="/events"
+              href="/customers/events"
               className="text-muted-foreground hover:text-foreground"
             >
               Events

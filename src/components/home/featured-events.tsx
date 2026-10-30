@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-import type { Event } from "@/components/home/home-page";
+import type { Event } from "@/lib/event-types";
 import { FeaturedEventCard } from "@/components/home/featured-event-card";
 
 type FeaturedEventsProps = {
@@ -26,7 +26,7 @@ export function FeaturedEvents({
           </div>
 
           <Link
-            href="/events"
+            href="/customers/events"
             className="hidden items-center gap-1 font-sans text-sm font-medium hover:text-primary sm:flex"
           >
             View all

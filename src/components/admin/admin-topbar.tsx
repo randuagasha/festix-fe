@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
-import { ChevronDown, LogOut, User as UserIcon } from "lucide-react";
+import { ChevronDown, House, LogOut, User as UserIcon } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -130,6 +130,13 @@ export function AdminTopbar() {
             >
               <UserIcon className="size-3.5 text-muted-foreground" />
               <span>My Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => router.push("/")}
+              className="cursor-pointer gap-2 px-2 py-1.5 font-sans text-xs"
+            >
+              <House className="size-3.5 text-muted-foreground" />
+              <span>Go to Home</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem

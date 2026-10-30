@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${sora.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
+      <body className="font-sans antialiased">
         {children}
         <Toaster></Toaster>
       </body>
