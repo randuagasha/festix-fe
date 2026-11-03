@@ -239,6 +239,32 @@ export default function EventWorkspacePage({
     }
   }
 
+  const [isCompletingEvent, setIsCompletingEvent] = useState(false);
+  const [currentTimestamp] = useState(() => Date.now());
+
+  async function handleCompleteEvent() {
+    if (!event) return;
+
+    const isPast = new Date(event.endDatetime).getTime() < Date.now();
+    if (!isPast) {
+      toast.error("Event cannot be marked as completed until its scheduled end date and time have passed");
+      return;
+    }
+
+    setIsCompletingEvent(true);
+    try {
+      await organizerFetch(`/events/${eventId}/complete`, {
+        method: "PATCH",
+      });
+      toast.success("Event marked as completed successfully!");
+      loadEvent();
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to mark event as completed");
+    } finally {
+      setIsCompletingEvent(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -417,6 +443,55 @@ export default function EventWorkspacePage({
               </div>
               <p className="mt-1 font-sans text-xs text-muted-foreground">
                 Your event has been submitted to the Tixora curation team. Once approved, the event will go live automatically, and pending staff invitations will activate.
+              </p>
+            </div>
+          )}
+
+          {event.status === "PUBLISHED" && (
+            <div className={`rounded-2xl border p-5 shadow-xs ${
+              new Date(event.endDatetime).getTime() < currentTimestamp
+                ? "border-emerald-500/40 bg-emerald-500/5"
+                : "border-border bg-card"
+            }`}>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 font-heading text-base font-bold text-foreground">
+                    <CheckCircle2 className={`size-5 ${
+                      new Date(event.endDatetime).getTime() < currentTimestamp
+                        ? "text-emerald-600 dark:text-emerald-400"
+                        : "text-muted-foreground"
+                    }`} />
+                    {new Date(event.endDatetime).getTime() < currentTimestamp
+                      ? "Event Schedule Has Ended"
+                      : "Event Completion Status"}
+                  </div>
+                  <p className="font-sans text-xs text-muted-foreground max-w-xl">
+                    {new Date(event.endDatetime).getTime() < currentTimestamp
+                      ? "The scheduled date and time for this event have passed. You can now finalize and mark this event as completed."
+                      : `This event is scheduled to end on ${formatDate(event.endDatetime)}. Completion can only be confirmed after the end date has passed.`}
+                  </p>
+                </div>
+
+                <Button
+                  size="lg"
+                  onClick={handleCompleteEvent}
+                  disabled={new Date(event.endDatetime).getTime() >= currentTimestamp || isCompletingEvent}
+                  className="rounded-xl px-6 py-3 font-sans text-xs font-bold gap-2 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm disabled:opacity-50"
+                >
+                  <CheckCircle2 className="size-4" />
+                  {isCompletingEvent ? "Completing Event..." : "Mark Event as Completed"}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {event.status === "COMPLETED" && (
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+              <div className="flex items-center gap-2 font-heading text-sm font-bold text-emerald-700 dark:text-emerald-400">
+                <CheckCircle2 className="size-5" /> Event Completed
+              </div>
+              <p className="mt-1 font-sans text-xs text-muted-foreground">
+                This event has been successfully concluded and marked as completed. Operations and ticket redemptions for this event are finalized.
               </p>
             </div>
           )}

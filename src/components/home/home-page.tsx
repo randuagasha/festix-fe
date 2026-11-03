@@ -21,6 +21,7 @@ export type { Event };
 export function HomePage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
   const [events, setEvents] = useState<Event[]>([]);
   const [popularEvents, setPopularEvents] = useState<Event[]>([]);
   const categories = ["All", "Hajatan", "Konser", "Pameran", "Seminar", "Workshop"];
@@ -69,20 +70,35 @@ export function HomePage() {
       );
   }, [events]);
 
-  const upcomingEvents = visibleEvents.slice(0, 3);
+  const categoryFilteredEvents = useMemo(() => {
+    return visibleEvents.filter(
+      (event) =>
+        category === "All" ||
+        event.category.toLowerCase() === category.toLowerCase(),
+    );
+  }, [visibleEvents, category]);
+
+  const upcomingEvents = categoryFilteredEvents.slice(0, 3);
 
   const popularEventsWithoutUpcoming = useMemo(() => {
     const upcomingIds = new Set(upcomingEvents.map((event) => event.id));
-    const visiblePopularEvents = popularEvents.filter(
-      (event) =>
-        event.status === "PUBLISHED" && new Date(event.endDatetime) > new Date(),
-    );
+    const now = new Date();
+    const visiblePopularEvents = popularEvents
+      .filter(
+        (event) =>
+          event.status === "PUBLISHED" && new Date(event.endDatetime) > now,
+      )
+      .filter(
+        (event) =>
+          category === "All" ||
+          event.category.toLowerCase() === category.toLowerCase(),
+      );
     const withoutUpcoming = visiblePopularEvents.filter(
       (event) => !upcomingIds.has(event.id),
     );
 
     return withoutUpcoming.length > 0 ? withoutUpcoming : visiblePopularEvents;
-  }, [popularEvents, upcomingEvents]);
+  }, [popularEvents, upcomingEvents, category]);
 
   function goToEvents(params: Record<string, string> = {}) {
     const searchParams = new URLSearchParams(params);
@@ -93,10 +109,6 @@ export function HomePage() {
   function handleSearchSubmit() {
     const query = search.trim();
     goToEvents(query ? { search: query } : {});
-  }
-
-  function handleCategorySelect(selectedCategory: string) {
-    goToEvents(selectedCategory === "All" ? {} : { category: selectedCategory });
   }
 
   return (
@@ -110,7 +122,11 @@ export function HomePage() {
           onSearchSubmit={handleSearchSubmit}
         />
 
-        <EventCategories categories={categories} onSelect={handleCategorySelect} />
+        <EventCategories
+          categories={categories}
+          selected={category}
+          onSelect={setCategory}
+        />
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">

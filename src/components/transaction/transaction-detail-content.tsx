@@ -229,7 +229,8 @@ export function TransactionDetailContent() {
         return;
       }
 
-      window.location.href = paymentUrl;
+      window.open(paymentUrl, "_blank");
+      router.push("/customers/my-tickets");
     } catch {
       toast.error("Terjadi kesalahan jaringan. Periksa koneksi internet Anda dan coba lagi.", {
         position: "top-center",

@@ -476,7 +476,7 @@ export function MyTicketsContent() {
                             <Button
                               type="button"
                               onClick={() => {
-                                if (order.paymentUrl) window.location.href = order.paymentUrl;
+                                if (order.paymentUrl) window.open(order.paymentUrl, "_blank");
                               }}
                               className="gap-2 rounded-xl font-sans text-xs font-semibold h-10 px-5 shrink-0 bg-amber-600 hover:bg-amber-700 text-white"
                             >

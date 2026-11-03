@@ -38,6 +38,7 @@ import { organizerFetch, type OrganizerEvent } from "@/lib/organizer-api";
 const statusTabs = [
   { label: "All", value: "" },
   { label: "Published", value: "PUBLISHED" },
+  { label: "Completed", value: "COMPLETED" },
   { label: "Draft", value: "DRAFT" },
   { label: "Pending Review", value: "PENDING_REVIEW" },
   { label: "Rejected", value: "REJECTED" },
@@ -86,6 +87,8 @@ export default function MyEventsPage() {
 
   // Submit for review loading state
   const [submittingId, setSubmittingId] = useState<string | null>(null);
+  const [completingId, setCompletingId] = useState<string | null>(null);
+  const [currentTimestamp] = useState(() => Date.now());
 
   const fetchEvents = useCallback(async () => {
     setLoading(true);
@@ -134,8 +137,29 @@ export default function MyEventsPage() {
     }
   }
 
+  async function handleCompleteEvent(eventId: string) {
+    setCompletingId(eventId);
+    try {
+      await organizerFetch(`/events/${eventId}/complete`, {
+        method: "PATCH",
+      });
+      toast.success("Event marked as completed successfully");
+      fetchEvents();
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to mark event as completed");
+    } finally {
+      setCompletingId(null);
+    }
+  }
+
   function getStatusBadge(status: string) {
     switch (status) {
+      case "COMPLETED":
+        return (
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            <CheckCircle2 className="size-3" /> Completed
+          </span>
+        );
       case "PUBLISHED":
         return (
           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -414,6 +438,17 @@ export default function MyEventsPage() {
 
                       {event.status === "PUBLISHED" && (
                         <>
+                          {new Date(event.endDatetime).getTime() < currentTimestamp && (
+                            <Button
+                              size="sm"
+                              disabled={completingId === event.id}
+                              onClick={() => handleCompleteEvent(event.id)}
+                              className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans text-xs font-semibold gap-1"
+                            >
+                              <CheckCircle2 className="size-3.5" />
+                              {completingId === event.id ? "Completing..." : "Complete Event"}
+                            </Button>
+                          )}
                           <Link
                             href={`/events/${event.id}`}
                             target="_blank"

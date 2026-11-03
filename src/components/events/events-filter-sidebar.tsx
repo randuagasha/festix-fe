@@ -84,9 +84,8 @@ export function EventsFilterSidebar({
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   function toggleCategory(category: string) {
-    const next = filters.categories.includes(category)
-      ? filters.categories.filter((c) => c !== category)
-      : [...filters.categories, category];
+    const isSelected = filters.categories.includes(category);
+    const next = isSelected ? [] : [category];
     onFiltersChange({ ...filters, categories: next });
   }
 

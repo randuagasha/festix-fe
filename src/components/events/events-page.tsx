@@ -46,10 +46,10 @@ function parseFiltersFromParams(searchParams: URLSearchParams): EventFilters {
   const queryTo = searchParams.get("to");
 
   const cats: string[] = [];
-  if (queryCategories.length > 0) {
-    cats.push(...queryCategories);
-  } else if (queryCategory && queryCategory !== "All") {
+  if (queryCategory && queryCategory !== "All") {
     cats.push(queryCategory);
+  } else if (queryCategories.length > 0 && queryCategories[0] !== "All") {
+    cats.push(queryCategories[0]);
   }
 
   return {
@@ -128,7 +128,7 @@ export function EventsPage() {
     const params = new URLSearchParams();
 
     if (newSearch.trim()) params.set("search", newSearch.trim());
-    newFilters.categories.forEach((cat) => params.append("category", cat));
+    if (newFilters.categories[0]) params.set("category", newFilters.categories[0]);
     if (newFilters.priceType !== "all") params.set("priceType", newFilters.priceType);
     if (newFilters.minPrice) params.set("minPrice", newFilters.minPrice);
     if (newFilters.maxPrice) params.set("maxPrice", newFilters.maxPrice);
