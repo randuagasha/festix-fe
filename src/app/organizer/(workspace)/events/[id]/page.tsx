@@ -394,7 +394,7 @@ export default function EventWorkspacePage({
                 <XCircle className="size-5" /> Event Revision Required by Admin
               </div>
               <p className="mt-2 font-sans text-xs text-foreground leading-relaxed">
-                Rejection feedback: "{event.rejectionReason || "Please review event details and ticket tiers."}"
+                Rejection feedback: &quot;{event.rejectionReason || "Please review event details and ticket tiers."}&quot;
               </p>
               <div className="mt-4 flex items-center gap-3">
                 <Button

@@ -20,7 +20,7 @@ const stats = [
 
 export function ProfileStats() {
   return (
-    <section className="grid grid-cols-3 overflow-hidden rounded-3xl border bg-card">
+    <section className="grid grid-cols-3 overflow-hidden rounded-xl border border-border bg-card">
       {stats.map((stat, index) => {
         const Icon = stat.icon;
 

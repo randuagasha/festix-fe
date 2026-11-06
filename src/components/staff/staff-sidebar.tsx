@@ -61,12 +61,12 @@ export function StaffSidebar({
     <Sidebar className="border-r border-border bg-card">
       <SidebarHeader className="flex h-16 flex-row items-center border-b border-border px-5">
         <Link href="/staff/dashboard" className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+          <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
             <Ticket className="size-5" />
           </div>
           <div className="flex flex-col">
             <span className="font-heading text-base font-bold tracking-tight text-foreground">
-              Festix<span className="text-primary">.</span>
+              Tixora<span className="text-primary">.</span>
             </span>
             <span className="flex items-center gap-1 font-sans text-[11px] font-medium text-primary">
               <ShieldCheck className="size-3" /> Staff Workspace
@@ -81,9 +81,9 @@ export function StaffSidebar({
           <button
             type="button"
             onClick={onOpenScanner}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary font-sans text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary font-sans text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
           >
-            <QrCode className="size-4.5" />
+            <QrCode className="size-4" />
             <span>Scan Ticket</span>
           </button>
         </div>
@@ -104,16 +104,16 @@ export function StaffSidebar({
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                       isActive={isActive}
-                      className={`h-11 rounded-xl px-3.5 font-sans text-sm font-medium transition-all ${
+                      className={`h-10 rounded-lg px-3 font-sans text-sm font-medium transition-all ${
                         isActive
-                          ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/95 hover:text-primary-foreground"
+                          ? "bg-primary/10 text-primary font-semibold hover:bg-primary/15 hover:text-primary"
                           : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
                       }`}
                       render={<Link href={item.href} />}
                     >
                       <Icon
-                        className={`size-4.5 shrink-0 ${
-                          isActive ? "text-primary-foreground" : "text-primary"
+                        className={`size-4 shrink-0 ${
+                          isActive ? "text-primary" : "text-muted-foreground"
                         }`}
                       />
                       <span>{item.label}</span>

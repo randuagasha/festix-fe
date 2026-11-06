@@ -14,29 +14,25 @@ export function HomeHero({
   onSearchSubmit,
 }: HomeHeroProps) {
   return (
-    <section className="border-b">
-      <div className="mx-auto max-w-7xl px-6 pb-10 pt-14 lg:px-8 lg:pb-14 lg:pt-20">
-        <div className="grid gap-10 lg:grid-cols-[1fr_420px] lg:items-end">
+    <section className="bg-muted border-b border-border py-14 lg:py-16">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:items-end">
           <div>
-            <p className="mb-5 font-sans text-sm font-medium text-primary">
-              Discover events
-            </p>
-
-            <h1 className="max-w-3xl font-heading text-4xl font-bold leading-[1.02] tracking-[-0.035em] sm:text-5xl lg:text-6xl">
-              Find something worth
+            <h1 className="max-w-2xl font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Temukan event yang
               <br />
-              showing up for.
+              <span className="text-primary">layak dihadiri</span>.
             </h1>
 
-            <p className="mt-6 max-w-xl font-sans text-base leading-7 text-muted-foreground">
-              Concerts, festivals, sports, and experiences happening
-              around you.
+            <p className="mt-4 max-w-lg font-sans text-sm leading-6 text-muted-foreground">
+              Konser, festival, olahraga, dan pengalaman menarik yang sedang
+              berlangsung di sekitarmu.
             </p>
           </div>
 
           <div>
-            <div className="mb-3 flex items-center gap-2 font-sans text-sm text-muted-foreground">
-              <MapPin className="size-4 text-primary" />
+            <div className="mb-2.5 flex items-center gap-1.5 font-sans text-xs text-muted-foreground">
+              <MapPin className="size-3.5 text-primary" />
               Jakarta, Indonesia
             </div>
 
@@ -45,27 +41,27 @@ export function HomeHero({
                 event.preventDefault();
                 onSearchSubmit();
               }}
-              className="flex h-14 border bg-background"
+              className="flex h-12 rounded-lg border border-border bg-white shadow-sm overflow-hidden"
             >
-              <div className="flex min-w-0 flex-1 items-center px-4">
-                <Search className="mr-3 size-5 shrink-0 text-muted-foreground" />
+              <div className="flex min-w-0 flex-1 items-center px-3.5">
+                <Search className="mr-2.5 size-4 shrink-0 text-muted-foreground" />
 
                 <input
                   value={search}
                   onChange={(event) =>
                     onSearchChange(event.target.value)
                   }
-                  placeholder="Search events..."
-                  className="w-full bg-transparent font-sans text-sm outline-none placeholder:text-muted-foreground"
+                  placeholder="Cari event, artis, venue..."
+                  className="w-full bg-transparent font-sans text-sm outline-none placeholder:text-muted-foreground text-foreground"
                 />
               </div>
 
               <button
                 type="submit"
-                className="flex w-14 shrink-0 items-center justify-center border-l transition-colors hover:bg-muted"
-                aria-label="Search events"
+                className="flex px-4 shrink-0 items-center justify-center bg-primary text-white font-sans text-sm font-medium hover:bg-primary/90 transition-colors"
+                aria-label="Cari event"
               >
-                <Search className="size-5" />
+                Cari
               </button>
             </form>
           </div>

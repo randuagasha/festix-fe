@@ -189,7 +189,7 @@ export function MyTicketsContent() {
 
           {/* Quick Metrics Strip */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Card className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
+            <Card className="rounded-xl border border-border bg-card p-4 shadow-2xs">
               <span className="font-sans text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 Total Pesanan
               </span>
@@ -198,8 +198,8 @@ export function MyTicketsContent() {
               </p>
             </Card>
 
-            <Card className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-              <span className="font-sans text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <Card className="rounded-xl border border-border bg-card p-4 shadow-2xs">
+              <span className="font-sans text-[11px] font-semibold text-amber-600 uppercase tracking-wider flex items-center gap-1.5">
                 <Clock3 className="size-3.5" />
                 Menunggu Pembayaran
               </span>
@@ -208,8 +208,8 @@ export function MyTicketsContent() {
               </p>
             </Card>
 
-            <Card className="rounded-2xl border border-border bg-card p-4 shadow-2xs">
-              <span className="font-sans text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+            <Card className="rounded-xl border border-border bg-card p-4 shadow-2xs">
+              <span className="font-sans text-[11px] font-semibold text-emerald-600 uppercase tracking-wider flex items-center gap-1.5">
                 <CheckCircle2 className="size-3.5" />
                 Tiket Diterbitkan
               </span>
@@ -221,11 +221,11 @@ export function MyTicketsContent() {
 
           {/* Filter Tabs and Search Bar */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <div className="inline-flex rounded-2xl border border-border bg-muted/40 p-1 self-start">
+            <div className="inline-flex rounded-lg border border-border bg-muted/40 p-1 self-start">
               <button
                 type="button"
                 onClick={() => setActiveTab("all")}
-                className={`rounded-xl px-4 py-2 font-sans text-xs font-semibold transition-all ${
+                className={`rounded-md px-4 py-2 font-sans text-xs font-semibold transition-all ${
                   activeTab === "all"
                     ? "bg-card text-foreground shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"
@@ -236,7 +236,7 @@ export function MyTicketsContent() {
               <button
                 type="button"
                 onClick={() => setActiveTab("pending")}
-                className={`rounded-xl px-4 py-2 font-sans text-xs font-semibold transition-all ${
+                className={`rounded-md px-4 py-2 font-sans text-xs font-semibold transition-all ${
                   activeTab === "pending"
                     ? "bg-card text-foreground shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"
@@ -247,7 +247,7 @@ export function MyTicketsContent() {
               <button
                 type="button"
                 onClick={() => setActiveTab("paid")}
-                className={`rounded-xl px-4 py-2 font-sans text-xs font-semibold transition-all ${
+                className={`rounded-md px-4 py-2 font-sans text-xs font-semibold transition-all ${
                   activeTab === "paid"
                     ? "bg-card text-foreground shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"

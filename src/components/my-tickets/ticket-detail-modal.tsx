@@ -74,7 +74,7 @@ export function TicketDetailModal({
       width: 400,
       margin: 2,
       color: {
-        dark: "#222831",
+        dark: "#0D1B2E",
         light: "#FFFFFF",
       },
       errorCorrectionLevel: "H",

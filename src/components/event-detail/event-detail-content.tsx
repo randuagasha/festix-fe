@@ -148,8 +148,8 @@ export function EventDetailContent() {
       <div className="min-h-svh bg-background flex flex-col justify-between">
         <HomeNavbar />
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-xs">
-            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <div className="mx-auto max-w-md text-center rounded-xl border border-border bg-card p-8 shadow-xs">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600">
               <AlertCircle className="size-7" />
             </div>
             <h2 className="mt-4 font-heading text-xl font-bold text-foreground">
@@ -160,7 +160,7 @@ export function EventDetailContent() {
             </p>
             <Link
               href="/customers/home"
-              className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
             >
               <ArrowLeft className="size-4" />
               <span>Jelajahi Event Lainnya</span>
@@ -178,8 +178,8 @@ export function EventDetailContent() {
       <div className="min-h-svh bg-background flex flex-col justify-between">
         <HomeNavbar />
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-xs">
-            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+          <div className="mx-auto max-w-md text-center rounded-xl border border-border bg-card p-8 shadow-xs">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-lg bg-muted text-muted-foreground">
               <XCircle className="size-7" />
             </div>
             <h2 className="mt-4 font-heading text-xl font-bold text-foreground">
@@ -190,7 +190,7 @@ export function EventDetailContent() {
             </p>
             <Link
               href="/customers/home"
-              className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
             >
               <ArrowLeft className="size-4" />
               <span>Kembali ke Beranda</span>
@@ -270,7 +270,7 @@ export function EventDetailContent() {
           </nav>
 
           {/* Hero Poster Banner */}
-          <section className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lg">
+          <section className="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <div className="relative aspect-[16/9] md:aspect-[21/9] w-full bg-foreground overflow-hidden">
               {event.coverImageUrl && !imageError ? (
                 <Image
@@ -284,7 +284,7 @@ export function EventDetailContent() {
                 />
               ) : (
                 <div className="flex size-full flex-col items-center justify-center bg-gradient-to-br from-foreground via-muted/30 to-foreground text-background p-8 text-center">
-                  <div className="flex size-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md mb-3">
+                  <div className="flex size-16 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md mb-3">
                     <Ticket className="size-8" />
                   </div>
                   <h2 className="font-heading text-xl md:text-2xl font-bold max-w-lg">
@@ -301,7 +301,7 @@ export function EventDetailContent() {
 
               {/* Category Pill and Share Floating on Top */}
               <div className="absolute top-4 left-4 right-4 flex items-center justify-between sm:top-6 sm:left-6 sm:right-6">
-                <span className="rounded-full bg-primary/90 backdrop-blur-md px-3.5 py-1.5 font-sans text-xs font-bold text-primary-foreground shadow-sm">
+                <span className="rounded-md bg-primary/90 backdrop-blur-md px-3 py-1 font-sans text-xs font-semibold text-primary-foreground shadow-sm">
                   {event.category.name}
                 </span>
 
@@ -309,9 +309,9 @@ export function EventDetailContent() {
                   type="button"
                   onClick={handleShare}
                   aria-label="Bagikan tautan event"
-                  className="flex size-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black hover:scale-105 active:scale-95"
+                  className="flex size-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black hover:scale-105 active:scale-95"
                 >
-                  <Share2 className="size-4.5" />
+                  <Share2 className="size-4" />
                 </button>
               </div>
 
@@ -322,15 +322,15 @@ export function EventDetailContent() {
                     {event.title}
                   </h1>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-3 font-sans text-xs text-white/90">
-                    <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 backdrop-blur-md font-medium">
+                  <div className="mt-3 flex flex-wrap items-center gap-2 font-sans text-xs text-white/90">
+                    <span className="flex items-center gap-1.5 rounded-md bg-white/15 px-2.5 py-1 backdrop-blur-md font-medium">
                       <Building2 className="size-3.5 text-primary" />
                       <span>{organizerName}</span>
                       <ShieldCheck className="size-3.5 text-primary ml-0.5" />
                     </span>
 
                     {minPrice !== null && (
-                      <span className="flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 backdrop-blur-md font-semibold text-emerald-300">
+                      <span className="flex items-center gap-1.5 rounded-md bg-emerald-500/20 px-2.5 py-1 backdrop-blur-md font-semibold text-emerald-300">
                         <span>Mulai dari {formatIDR(minPrice)}</span>
                       </span>
                     )}

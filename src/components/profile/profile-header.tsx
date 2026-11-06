@@ -90,7 +90,7 @@ export function ProfileHeader({ user, onUserUpdate }: ProfileHeaderProps) {
   }
 
   return (
-    <section className="overflow-hidden rounded-3xl border bg-card">
+    <section className="overflow-hidden rounded-xl border border-border bg-card">
       <input
         ref={fileInputRef}
         type="file"
@@ -105,11 +105,11 @@ export function ProfileHeader({ user, onUserUpdate }: ProfileHeaderProps) {
         <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
             <div className="relative">
-              <Avatar className="size-28 rounded-3xl border-4 border-card sm:size-32">
+              <Avatar className="size-28 rounded-xl border-4 border-card sm:size-32">
                 {user?.avatar && (
                   <AvatarImage src={user.avatar} alt={displayName} />
                 )}
-                <AvatarFallback className="rounded-3xl bg-primary/15 font-heading text-3xl font-bold text-primary sm:text-4xl">
+                <AvatarFallback className="rounded-xl bg-primary/15 font-heading text-3xl font-bold text-primary sm:text-4xl">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -118,15 +118,15 @@ export function ProfileHeader({ user, onUserUpdate }: ProfileHeaderProps) {
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploadingAvatar}
-                className="absolute bottom-1 right-1 flex size-9 items-center justify-center rounded-full border bg-background shadow-sm transition-colors hover:bg-muted disabled:opacity-50"
-                aria-label="Change profile picture"
+                className="absolute bottom-1 right-1 flex size-9 items-center justify-center rounded-full border border-border bg-background shadow-sm transition-colors hover:bg-muted disabled:opacity-50"
+                aria-label="Ganti foto profil"
               >
                 <Camera className="size-4" />
               </button>
             </div>
 
             <div className="pb-1">
-              <h2 className="font-heading text-2xl font-bold">{displayName}</h2>
+              <h2 className="font-heading text-2xl font-bold text-foreground">{displayName}</h2>
               <p className="mt-1 font-sans text-xs font-semibold uppercase tracking-wider text-primary">
                 {user?.role || "USER"}
               </p>
@@ -135,14 +135,14 @@ export function ProfileHeader({ user, onUserUpdate }: ProfileHeaderProps) {
 
           <Button
             variant="outline"
-            className="w-full font-sans sm:w-auto"
+            className="w-full font-sans sm:w-auto border-border text-foreground hover:bg-muted"
             onClick={() => {
               setFullNameInput(user?.fullName || "");
               setDialogOpen(true);
             }}
           >
             <Pencil className="size-4" />
-            Edit Profile
+            Edit Profil
           </Button>
         </div>
 

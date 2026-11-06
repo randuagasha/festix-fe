@@ -521,7 +521,7 @@ export default function MyEventsPage() {
             <AlertCircle className="size-5" /> Event Revision Required
           </DialogTitle>
           <DialogDescription className="mt-2 text-xs text-muted-foreground">
-            The administrator provided the following feedback for "{rejectionModal.title}":
+            The administrator provided the following feedback for &quot;{rejectionModal.title}&quot;:
           </DialogDescription>
           <div className="mt-4 rounded-xl border border-destructive/20 bg-destructive/5 p-4 font-sans text-sm text-foreground">
             {rejectionModal.reason || "No specific feedback reason was provided."}

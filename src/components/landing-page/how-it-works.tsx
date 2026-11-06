@@ -1,71 +1,66 @@
 "use client";
 
-import { Search, Ticket, CreditCard } from "lucide-react";
+import { Search, Ticket, CheckCircle2 } from "lucide-react";
 
 const steps = [
   {
     number: "01",
     icon: Search,
-    title: "Find Your Event",
+    title: "Cari Event Impian",
     description:
-      "Browse and discover concerts or events that you want to attend.",
+      "Jelajahi konser, festival musik, atau seminar sesuai minat dan kotamu.",
   },
   {
     number: "02",
     icon: Ticket,
-    title: "Choose Your Ticket",
+    title: "Pilih Tiket & Jumlah",
     description:
-      "Select the ticket category and quantity that suits you.",
+      "Tentukan kategori tiket yang sesuai dan atur jumlah tiket yang ingin dibeli.",
   },
   {
     number: "03",
-    icon: CreditCard,
-    title: "Complete Your Order",
+    icon: CheckCircle2,
+    title: "Bayar & Dapatkan E-Tiket",
     description:
-      "Finish your payment and receive your digital ticket.",
+      "Selesaikan pembayaran instan dan QR code e-tiket Anda siap digunakan saat check-in.",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="bg-white py-24">
-      <div className="container mx-auto px-6 md:px-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-3 font-sans text-sm font-medium uppercase tracking-[0.25em] text-primary">
-            Simple Process
-          </p>
-
-          <h2 className="font-heading text-4xl font-semibold tracking-tight md:text-5xl">
-            How It Works
+    <section className="bg-[#F0F8FF]/60 py-20 border-t border-border">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center mb-16">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Cara Kerja Tixora
           </h2>
-
-          <p className="mt-5 font-sans text-muted-foreground">
-            Getting your ticket should be simple.
+          <p className="mt-3 font-sans text-sm text-muted-foreground">
+            Tiga langkah mudah untuk menghadiri event favoritmu tanpa antre.
           </p>
         </div>
 
-        <div className="relative mt-16 grid gap-10 md:grid-cols-3">
-          {steps.map((step) => {
+        <div className="relative grid gap-8 md:grid-cols-3">
+          {steps.map((step, idx) => {
             const Icon = step.icon;
-
             return (
               <div
                 key={step.number}
-                className="relative text-center md:text-left"
+                className="relative flex flex-col rounded-xl border border-border bg-white p-7 shadow-xs transition-all duration-200 hover:shadow-md"
               >
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground md:mx-0">
-                  <Icon className="h-7 w-7" />
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Icon className="size-5" />
+                  </div>
+                  <span className="font-heading text-2xl font-extrabold text-primary/30">
+                    {step.number}
+                  </span>
                 </div>
 
-                <p className="mt-6 font-sans text-sm font-medium text-primary">
-                  {step.number}
-                </p>
-
-                <h3 className="mt-2 font-heading text-2xl font-semibold">
+                <h3 className="font-heading text-lg font-bold text-foreground">
                   {step.title}
                 </h3>
 
-                <p className="mt-3 max-w-sm font-sans text-sm leading-6 text-muted-foreground md:max-w-none">
+                <p className="mt-2.5 font-sans text-xs leading-relaxed text-muted-foreground">
                   {step.description}
                 </p>
               </div>

@@ -1,80 +1,69 @@
 "use client";
 
-import {
-  CreditCard,
-  ShieldCheck,
-  Ticket,
-  Zap,
-} from "lucide-react";
+import { Zap, ShieldCheck, Ticket, CreditCard } from "lucide-react";
 
 const features = [
   {
     icon: Zap,
-    title: "Easy Booking",
+    title: "Booking Cepat & Mudah",
     description:
-      "Find and book your favorite events through a simple and straightforward experience.",
+      "Temukan event dan selesaikan pembelian tiket hanya dalam beberapa langkah tanpa ribet.",
   },
   {
     icon: ShieldCheck,
-    title: "Secure Payment",
+    title: "Transaksi 100% Aman",
     description:
-      "Complete your transaction through a secure and reliable payment process.",
+      "Setiap pembayaran diproses melalui payment gateway terenkripsi dengan proteksi penuh.",
   },
   {
     icon: Ticket,
-    title: "Digital Ticket",
+    title: "E-Tiket & QR Code Resmi",
     description:
-      "Keep your tickets accessible digitally and ready whenever you need them.",
+      "Tiket digital dengan QR code unik langsung terbit dan tersimpan di akun Anda untuk check-in.",
   },
   {
     icon: CreditCard,
-    title: "Simple Checkout",
+    title: "Metode Pembayaran Luas",
     description:
-      "Choose your ticket, complete your payment, and get ready for the event.",
+      "Mendukung berbagai metode pembayaran mulai dari Virtual Account hingga dompet digital.",
   },
 ];
 
 export function WhyTixora() {
   return (
-    <section className="bg-white py-24">
-      <div className="container mx-auto px-6 md:px-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-3 font-sans text-sm font-medium uppercase tracking-[0.25em] text-primary">
-            Why Tixora
-          </p>
-
-          <h2 className="font-heading text-4xl font-semibold tracking-tight md:text-5xl">
-            Everything You Need
-            <br />
-            For Your Next Event.
+    <section className="bg-white py-20 border-t border-border">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center mb-16">
+          <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Kenapa Memilih Tixora
           </h2>
-
-          <p className="mt-5 font-sans leading-7 text-muted-foreground">
-            From discovering an event to getting your ticket, Tixora makes
-            every step simple.
+          <p className="mt-3 font-sans text-sm text-muted-foreground leading-relaxed">
+            Platform ticketing modern yang dirancang untuk memberikan pengalaman
+            terbaik bagi pengunjung maupun penyelenggara event.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => {
             const Icon = feature.icon;
-
             return (
               <div
                 key={feature.title}
-                className="rounded-2xl border bg-background p-7"
+                className="group flex flex-col justify-between rounded-xl border border-border bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <Icon className="h-6 w-6 text-primary" />
+                <div>
+                  <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                    <Icon className="size-5" />
+                  </div>
+
+                  <h3 className="mt-5 font-heading text-base font-bold text-foreground">
+                    {feature.title}
+                  </h3>
+
+                  <p className="mt-2 font-sans text-xs leading-relaxed text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </div>
-
-                <h3 className="mt-6 font-heading text-xl font-semibold">
-                  {feature.title}
-                </h3>
-
-                <p className="mt-3 font-sans text-sm leading-6 text-muted-foreground">
-                  {feature.description}
-                </p>
               </div>
             );
           })}

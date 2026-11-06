@@ -6,6 +6,7 @@ import { WhyTixora } from "@/components/landing-page/why-tixora";
 import { UpcomingEvents } from "@/components/landing-page/upcoming-events";
 import { HowItWorks } from "@/components/landing-page/how-it-works";
 import { CtaSection } from "@/components/landing-page/cta-section";
+import { HomeFooter } from "@/components/home/home-footer";
 import { API_URL } from "../../../api";
 
 interface TicketType {
@@ -72,25 +73,29 @@ export default async function LandingPage() {
   const categories: EventCategory[] = await categoriesResponse.json();
 
   return (
-    <main>
+    <div className="min-h-svh bg-background flex flex-col justify-between">
       <Navbar isLoggedIn={false} />
 
-      <HeroSection />
+      <main className="flex-1">
+        <HeroSection />
 
-      <FeaturedEvents events={mostPopularEvents} />
+        <FeaturedEvents events={mostPopularEvents} />
 
-      <ExploreEvents
-        events={events}
-        categories={categories}
-      />
+        <ExploreEvents
+          events={events}
+          categories={categories}
+        />
 
-      <WhyTixora />
+        <WhyTixora />
 
-      <UpcomingEvents />
+        <UpcomingEvents events={events} />
 
-      <HowItWorks />
+        <HowItWorks />
 
-      <CtaSection />
-    </main>
+        <CtaSection />
+      </main>
+
+      <HomeFooter />
+    </div>
   );
 }

@@ -339,12 +339,12 @@ export function OrganizerForm({
         </span>
 
         <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
-          You're an approved organizer
+          You&apos;re an approved organizer
         </h2>
 
         <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-muted-foreground">
           Your application has been approved. You can now create and manage
-          events on Festix.
+          events on Tixora.
         </p>
 
         <div className="mt-6 flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 font-sans text-xs font-medium text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-400">
@@ -388,7 +388,7 @@ export function OrganizerForm({
               <p className="font-sans text-sm md:text-base leading-relaxed text-muted-foreground">
                 {isResubmission
                   ? "Review your previous application, make the necessary changes, and submit it again."
-                  : "Tell us about your organization and provide the required documents to start hosting events on Festix."}
+                  : "Tell us about your organization and provide the required documents to start hosting events on Tixora."}
               </p>
             </div>
 

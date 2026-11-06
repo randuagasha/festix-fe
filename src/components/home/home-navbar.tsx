@@ -5,7 +5,6 @@ import {
   Heart,
   LayoutDashboard,
   Menu,
-  Ticket,
   UserRound,
   X,
 } from "lucide-react";
@@ -24,25 +23,21 @@ export function HomeNavbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-19 max-w-7xl items-center justify-between px-6 lg:px-8">
+    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
         <Link
           href="/customers/home"
-          className="flex items-center gap-2 font-heading text-[22px] font-bold tracking-tight"
+          className="font-heading text-xl font-bold text-foreground"
         >
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Ticket className="size-4.25" />
-          </span>
-
-          Festix<span className="text-primary">.</span>
+          Tixora<span className="text-primary">.</span>
         </Link>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           <Link
             href="/customers/home"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
               pathname === "/customers/home"
-                ? "font-medium text-foreground"
+                ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }`}
           >
@@ -52,7 +47,7 @@ export function HomeNavbar() {
           <Link
             href="/customers/events"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/customers/events" ? "font-medium text-foreground" : "text-muted-foreground"
+              pathname === "/customers/events" ? "font-semibold text-foreground" : "text-muted-foreground"
             }`}
           >
             Events
@@ -61,7 +56,7 @@ export function HomeNavbar() {
           <Link
             href="/wishlist"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/wishlist" ? "font-medium text-foreground" : "text-muted-foreground"
+              pathname === "/wishlist" ? "font-semibold text-foreground" : "text-muted-foreground"
             }`}
           >
             Wishlist
@@ -71,56 +66,57 @@ export function HomeNavbar() {
             href="/customers/my-tickets"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
               pathname === "/customers/my-tickets"
-                ? "font-medium text-foreground"
+                ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }`}
           >
-            My Tickets
+            Tiket Saya
           </Link>
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           {user?.role === "ADMIN" && (
             <Button
               size="sm"
               variant="outline"
               nativeButton={false}
               render={<Link href="/admin/dashboard" />}
+              className="border-border text-foreground hover:bg-muted font-sans"
             >
               <LayoutDashboard className="size-3.5" />
-              Admin Dashboard
+              Admin
             </Button>
           )}
           <Link
             href="/profile"
-            className="flex items-center gap-2 border-l pl-5 font-sans text-sm font-medium"
+            className="flex items-center gap-2 border-l border-border pl-4 font-sans text-sm font-medium text-foreground hover:text-primary transition-colors"
           >
-            <UserRound className="size-4.5" />
-            Profile
+            <UserRound className="size-4" />
+            Profil
           </Link>
         </div>
 
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden"
+          className="p-2 rounded-lg text-foreground hover:bg-muted md:hidden"
           aria-label="Open menu"
         >
           {mobileOpen ? (
-            <X className="size-6" />
+            <X className="size-5" />
           ) : (
-            <Menu className="size-6" />
+            <Menu className="size-5" />
           )}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="border-t px-6 py-5 md:hidden">
-          <nav className="flex flex-col">
+        <div className="border-t border-border px-6 py-4 md:hidden bg-white">
+          <nav className="flex flex-col gap-1">
             <Link
               href="/customers/home"
               onClick={() => setMobileOpen(false)}
-              className="border-b py-3 font-sans text-sm font-medium"
+              className="py-2.5 font-sans text-sm font-medium text-foreground"
             >
               Home
             </Link>
@@ -128,7 +124,7 @@ export function HomeNavbar() {
             <Link
               href="/customers/events"
               onClick={() => setMobileOpen(false)}
-              className="border-b py-3 font-sans text-sm"
+              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
             >
               Events
             </Link>
@@ -136,7 +132,7 @@ export function HomeNavbar() {
             <Link
               href="/wishlist"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 border-b py-3 font-sans text-sm"
+              className="flex items-center gap-2 py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
             >
               <Heart className="size-4" />
               Wishlist
@@ -145,17 +141,17 @@ export function HomeNavbar() {
             <Link
               href="/customers/my-tickets"
               onClick={() => setMobileOpen(false)}
-              className="border-b py-3 font-sans text-sm"
+              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
             >
-              My Tickets
+              Tiket Saya
             </Link>
 
             <Link
               href="/profile"
               onClick={() => setMobileOpen(false)}
-              className="py-3 font-sans text-sm"
+              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
             >
-              Profile
+              Profil
             </Link>
           </nav>
         </div>

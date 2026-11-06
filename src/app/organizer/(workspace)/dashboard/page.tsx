@@ -104,21 +104,18 @@ export default function OrganizerDashboardPage() {
   return (
     <div className="space-y-7 pb-10">
       {/* 1. Welcoming Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-foreground via-foreground/95 to-foreground p-6 text-background sm:p-8">
-        <div className="absolute -right-20 -top-20 size-60 rounded-full bg-primary/25 blur-3xl" />
-        <div className="absolute -bottom-24 left-1/2 size-72 rounded-full bg-primary/15 blur-3xl" />
-
+      <section className="relative overflow-hidden rounded-xl bg-[#0D1B2E] p-6 text-white sm:p-8">
         <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <div className="max-w-2xl">
             <div className="mb-2 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1 font-sans text-xs font-semibold text-primary">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-primary/20 px-2.5 py-1 font-sans text-xs font-semibold text-primary">
                 <Sparkles className="size-3.5" /> {organizationName}
               </span>
             </div>
             <h1 className="font-heading text-2xl font-bold tracking-tight text-white sm:text-3xl">
               Organizer Command Center
             </h1>
-            <p className="mt-2 font-sans text-sm leading-relaxed text-background/70 sm:text-base">
+            <p className="mt-2 font-sans text-sm leading-relaxed text-white/70 sm:text-base">
               Create immersive event experiences, track live ticket sales, manage your on-ground crew, and monitor attendee check-in.
             </p>
           </div>
@@ -126,14 +123,14 @@ export default function OrganizerDashboardPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/organizer/events/create"
-              className="inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 font-sans text-sm font-semibold text-primary-foreground shadow-md transition-all hover:scale-[1.02] hover:bg-primary/95 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90"
             >
-              <CalendarPlus className="size-4.5" />
+              <CalendarPlus className="size-4" />
               <span>Create Event</span>
             </Link>
             <Link
               href="/organizer/events"
-              className="inline-flex items-center gap-2 rounded-2xl border border-background/20 bg-background/10 px-4 py-3 font-sans text-sm font-medium text-white backdrop-blur-xs transition-colors hover:bg-background/20"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 font-sans text-sm font-medium text-white transition-colors hover:bg-white/20"
             >
               <Calendar className="size-4" />
               <span>My Events</span>

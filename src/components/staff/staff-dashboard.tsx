@@ -86,7 +86,7 @@ export function StaffDashboardContent() {
   return (
     <div className="space-y-7">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl border bg-card p-6 md:p-8">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 md:p-8">
         <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
             <span className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-primary">

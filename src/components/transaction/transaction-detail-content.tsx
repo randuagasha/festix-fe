@@ -270,8 +270,8 @@ export function TransactionDetailContent() {
       <div className="min-h-svh bg-background flex flex-col justify-between">
         <HomeNavbar />
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-xs">
-            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <div className="mx-auto max-w-md text-center rounded-xl border border-border bg-card p-8 shadow-xs">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600">
               <AlertCircle className="size-7" />
             </div>
             <h2 className="mt-4 font-heading text-xl font-bold text-foreground">
@@ -284,7 +284,7 @@ export function TransactionDetailContent() {
             </p>
             <Link
               href="/customers/home"
-              className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
             >
               <ArrowLeft className="size-4" />
               <span>Kembali ke Beranda</span>
@@ -301,8 +301,8 @@ export function TransactionDetailContent() {
       <div className="min-h-svh bg-background flex flex-col justify-between">
         <HomeNavbar />
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-xs">
-            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+          <div className="mx-auto max-w-md text-center rounded-xl border border-border bg-card p-8 shadow-xs">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-lg bg-destructive/10 text-destructive">
               <AlertCircle className="size-7" />
             </div>
             <h2 className="mt-4 font-heading text-xl font-bold text-foreground">
@@ -320,7 +320,7 @@ export function TransactionDetailContent() {
             {event ? (
               <Link
                 href={`/events/detail?id=${event.id}`}
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
               >
                 <ArrowLeft className="size-4" />
                 <span>Kembali ke Detail Event</span>
@@ -328,7 +328,7 @@ export function TransactionDetailContent() {
             ) : (
               <Link
                 href="/customers/home"
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-sans text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/95"
               >
                 <ArrowLeft className="size-4" />
                 <span>Kembali ke Beranda</span>
