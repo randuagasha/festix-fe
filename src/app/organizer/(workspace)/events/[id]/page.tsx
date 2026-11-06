@@ -316,13 +316,17 @@ export default function EventWorkspacePage({
               src={event.coverImageUrl}
               alt={event.title}
               fill
-              className="object-cover opacity-90"
+              className={`object-cover ${event.status === "COMPLETED" ? "opacity-75 grayscale" : "opacity-90"}`}
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
-                <span className="rounded-full bg-primary px-3 py-1 font-sans text-xs font-bold text-primary-foreground">
+                <span className={`rounded-full px-3 py-1 font-sans text-xs font-bold ${
+                  event.status === "COMPLETED"
+                    ? "bg-muted text-muted-foreground border border-white/20"
+                    : "bg-primary text-primary-foreground"
+                }`}>
                   {event.category.name}
                 </span>
                 <h1 className="mt-2 font-heading text-2xl font-bold text-white sm:text-3xl">

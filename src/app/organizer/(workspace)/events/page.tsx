@@ -156,7 +156,7 @@ export default function MyEventsPage() {
     switch (status) {
       case "COMPLETED":
         return (
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 font-sans text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/80 px-2.5 py-0.5 font-sans text-xs font-semibold text-muted-foreground">
             <CheckCircle2 className="size-3" /> Completed
           </span>
         );
@@ -303,6 +303,7 @@ export default function MyEventsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => {
+            const isCompleted = event.status === "COMPLETED";
             const totalQuota = event.ticketTypes.reduce((acc, tt) => acc + tt.quota, 0);
             const availableQuota = event.ticketTypes.reduce((acc, tt) => acc + tt.availableQuota, 0);
             const soldQuota = Math.max(0, totalQuota - availableQuota);
@@ -312,7 +313,11 @@ export default function MyEventsPage() {
             return (
               <div
                 key={event.id}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition-all hover:border-primary/40 hover:shadow-md"
+                className={`group flex flex-col overflow-hidden rounded-2xl border transition-all ${
+                  isCompleted
+                    ? "border-border/60 bg-muted/20 opacity-75 grayscale hover:grayscale-0 hover:opacity-100"
+                    : "border-border bg-card shadow-xs hover:border-primary/40 hover:shadow-md"
+                }`}
               >
                 {/* Poster Cover */}
                 <div className="relative aspect-video w-full overflow-hidden bg-muted">
@@ -321,7 +326,9 @@ export default function MyEventsPage() {
                       src={event.coverImageUrl}
                       alt={event.title}
                       fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
+                        isCompleted ? "grayscale contrast-75" : ""
+                      }`}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
@@ -342,7 +349,9 @@ export default function MyEventsPage() {
                 {/* Body Content */}
                 <div className="flex flex-1 flex-col justify-between p-5">
                   <div>
-                    <h3 className="font-heading text-lg font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                    <h3 className={`font-heading text-lg font-bold line-clamp-1 transition-colors ${
+                      isCompleted ? "text-muted-foreground" : "text-foreground group-hover:text-primary"
+                    }`}>
                       {event.title}
                     </h3>
 
@@ -372,107 +381,113 @@ export default function MyEventsPage() {
                     </div>
                     <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full bg-primary transition-all"
+                        className={`h-full transition-all ${
+                          isCompleted ? "bg-muted-foreground/40" : "bg-primary"
+                        }`}
                         style={{ width: `${Math.min(100, percentSold)}%` }}
                       />
                     </div>
 
                     {/* Contextual Action Buttons */}
-                    <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
-                      {event.status === "DRAFT" && (
-                        <>
-                          <Link
-                            href={`/organizer/events/${event.id}`}
-                            className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold hover:bg-muted/60 transition-colors"
-                          >
-                            Edit
-                          </Link>
-                          {event.ticketTypes.length > 0 && (
-                            <Button
-                              size="sm"
-                              className="h-8 rounded-xl px-3 font-sans text-xs font-semibold gap-1.5"
-                              disabled={submittingId === event.id}
-                              onClick={() => handleSubmitForReview(event.id)}
-                            >
-                              <Send className="size-3" />
-                              {submittingId === event.id ? "Submitting..." : "Submit Review"}
-                            </Button>
-                          )}
-                        </>
-                      )}
-
-                      {event.status === "REJECTED" && (
-                        <>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            className="h-8 rounded-xl px-3 font-sans text-xs font-semibold gap-1"
-                            onClick={() =>
-                              setRejectionModal({
-                                open: true,
-                                title: event.title,
-                                reason: event.rejectionReason ?? null,
-                                eventId: event.id,
-                              })
-                            }
-                          >
-                            View Reason
-                          </Button>
-                          <Link
-                            href={`/organizer/events/${event.id}`}
-                            className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 font-sans text-xs font-semibold text-primary-foreground hover:bg-primary/95 transition-colors"
-                          >
-                            Edit & Resubmit
-                          </Link>
-                        </>
-                      )}
-
-                      {event.status === "PENDING_REVIEW" && (
-                        <Link
-                          href={`/organizer/events/${event.id}`}
-                          className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                      {event.status === "PUBLISHED" && new Date(event.endDatetime).getTime() < currentTimestamp && (
+                        <Button
+                          variant="outline"
+                          size="xs"
+                          disabled={completingId === event.id}
+                          onClick={() => handleCompleteEvent(event.id)}
+                          className="h-7 rounded-lg border-emerald-500/40 bg-emerald-500/10 px-2.5 font-sans text-[11px] font-semibold text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300 gap-1"
                         >
-                          <Eye className="size-3.5" /> View Submission
-                        </Link>
+                          <CheckCircle2 className="size-3 text-emerald-600 dark:text-emerald-400" />
+                          {completingId === event.id ? "Completing..." : "Complete Event"}
+                        </Button>
                       )}
 
-                      {event.status === "PUBLISHED" && (
-                        <>
-                          {new Date(event.endDatetime).getTime() < currentTimestamp && (
-                            <Button
-                              size="sm"
-                              disabled={completingId === event.id}
-                              onClick={() => handleCompleteEvent(event.id)}
-                              className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-sans text-xs font-semibold gap-1"
+                      <div className="ml-auto flex items-center gap-2">
+                        {event.status === "DRAFT" && (
+                          <>
+                            <Link
+                              href={`/organizer/events/${event.id}`}
+                              className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold hover:bg-muted/60 transition-colors"
                             >
-                              <CheckCircle2 className="size-3.5" />
-                              {completingId === event.id ? "Completing..." : "Complete Event"}
+                              Edit
+                            </Link>
+                            {event.ticketTypes.length > 0 && (
+                              <Button
+                                size="sm"
+                                className="h-8 rounded-xl px-3 font-sans text-xs font-semibold gap-1.5"
+                                disabled={submittingId === event.id}
+                                onClick={() => handleSubmitForReview(event.id)}
+                              >
+                                <Send className="size-3" />
+                                {submittingId === event.id ? "Submitting..." : "Submit Review"}
+                              </Button>
+                            )}
+                          </>
+                        )}
+
+                        {event.status === "REJECTED" && (
+                          <>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              className="h-8 rounded-xl px-3 font-sans text-xs font-semibold gap-1"
+                              onClick={() =>
+                                setRejectionModal({
+                                  open: true,
+                                  title: event.title,
+                                  reason: event.rejectionReason ?? null,
+                                  eventId: event.id,
+                                })
+                              }
+                            >
+                              View Reason
                             </Button>
-                          )}
-                          <Link
-                            href={`/events/${event.id}`}
-                            target="_blank"
-                            className="inline-flex items-center gap-1 rounded-xl border border-border px-2.5 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            <ExternalLink className="size-3" /> Live
-                          </Link>
+                            <Link
+                              href={`/organizer/events/${event.id}`}
+                              className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 font-sans text-xs font-semibold text-primary-foreground hover:bg-primary/95 transition-colors"
+                            >
+                              Edit & Resubmit
+                            </Link>
+                          </>
+                        )}
+
+                        {event.status === "PENDING_REVIEW" && (
                           <Link
                             href={`/organizer/events/${event.id}`}
-                            className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 font-sans text-xs font-semibold text-primary-foreground hover:bg-primary/95 transition-colors"
+                            className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
                           >
-                            <Eye className="size-3.5" /> Manage Workspace
+                            <Eye className="size-3.5" /> View Submission
                           </Link>
-                        </>
-                      )}
+                        )}
 
-                      {(event.status === "CANCELLED" || event.status === "COMPLETED") && (
-                        <Link
-                          href={`/organizer/events/${event.id}`}
-                          className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          <Eye className="size-3.5" /> Details
-                        </Link>
-                      )}
+                        {event.status === "PUBLISHED" && (
+                          <>
+                            <Link
+                              href={`/events/${event.id}`}
+                              target="_blank"
+                              className="inline-flex items-center gap-1 rounded-xl border border-border px-2.5 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              <ExternalLink className="size-3" /> Live
+                            </Link>
+                            <Link
+                              href={`/organizer/events/${event.id}`}
+                              className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 font-sans text-xs font-semibold text-primary-foreground hover:bg-primary/95 transition-colors"
+                            >
+                              <Eye className="size-3.5" /> Manage Workspace
+                            </Link>
+                          </>
+                        )}
+
+                        {(event.status === "CANCELLED" || event.status === "COMPLETED") && (
+                          <Link
+                            href={`/organizer/events/${event.id}`}
+                            className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-1.5 font-sans text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <Eye className="size-3.5" /> Details
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
