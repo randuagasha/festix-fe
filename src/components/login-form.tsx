@@ -9,6 +9,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/password-input";
 import { API_URL } from "../../api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -151,10 +152,9 @@ export function LoginForm({
               Lupa Password?
             </a>
           </div>
-          <Input
+          <PasswordInput
             className="font-sans"
             id="password"
-            type="password"
             name="password"
             required
             onChange={(e) => handleInputChanges(e.target)}

@@ -12,6 +12,7 @@ import {
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/password-input";
 import {
   Dialog,
   DialogClose,
@@ -175,8 +176,7 @@ export function SecurityModal({
                 <label className="font-sans text-xs font-medium text-foreground">
                   Current Password
                 </label>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder="Enter your existing password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
@@ -239,8 +239,7 @@ export function SecurityModal({
                 <label className="font-sans text-xs font-medium text-foreground">
                   New Password
                 </label>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder="Minimum 8 characters"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
@@ -254,8 +253,7 @@ export function SecurityModal({
                 <label className="font-sans text-xs font-medium text-foreground">
                   Confirm New Password
                 </label>
-                <Input
-                  type="password"
+                <PasswordInput
                   placeholder="Re-enter your new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

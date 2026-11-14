@@ -8,7 +8,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/password-input";
 import { API_URL } from "../../api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -129,11 +129,10 @@ export function NewPasswordForm({
             Password Baru
           </FieldLabel>
 
-          <Input
+          <PasswordInput
             className="font-sans"
             id="password"
             name="password"
-            type="password"
             required
             value={formData.password}
             onChange={(e) => handleInputChanges(e.target)}
@@ -145,11 +144,10 @@ export function NewPasswordForm({
             Konfirmasi Password
           </FieldLabel>
 
-          <Input
+          <PasswordInput
             className="font-sans"
             id="confirm-password"
             name="confirmPassword"
-            type="password"
             required
             value={formData.confirmPassword}
             onChange={(e) => handleInputChanges(e.target)}
