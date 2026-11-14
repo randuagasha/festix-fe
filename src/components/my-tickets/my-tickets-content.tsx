@@ -9,7 +9,6 @@ import {
   Calendar,
   Clock,
   MapPin,
-  CreditCard,
   QrCode,
   ArrowRight,
   ExternalLink,
@@ -71,6 +70,7 @@ export function MyTicketsContent() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   const [activeTab, setActiveTab] = useState<TicketFilterTab>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,6 +82,7 @@ export function MyTicketsContent() {
     if (isRefresh) setRefreshing(true);
     else setLoading(true);
     setError(null);
+    setCurrentTime(Date.now());
 
     try {
       const [ordersData, ticketsData] = await Promise.all([
@@ -119,18 +120,35 @@ export function MyTicketsContent() {
   }, [tickets]);
 
   const pendingOrders = useMemo(
-    () => orders.filter((o) => o.paymentStatus === "PENDING"),
-    [orders]
+    () =>
+      orders.filter(
+        (o) =>
+          o.paymentStatus === "PENDING" &&
+          new Date(o.expiresAt).getTime() > currentTime,
+      ),
+    [orders, currentTime],
   );
   const paidOrders = useMemo(
     () => orders.filter((o) => o.paymentStatus === "PAID"),
-    [orders]
+    [orders],
+  );
+  const expiredOrFailedOrders = useMemo(
+    () =>
+      orders.filter(
+        (o) =>
+          o.paymentStatus === "EXPIRED" ||
+          o.paymentStatus === "FAILED" ||
+          (o.paymentStatus === "PENDING" &&
+            new Date(o.expiresAt).getTime() <= currentTime),
+      ),
+    [orders, currentTime],
   );
 
   const filteredOrders = useMemo(() => {
     let list = orders;
     if (activeTab === "pending") list = pendingOrders;
     else if (activeTab === "paid") list = paidOrders;
+    else if (activeTab === "expired") list = expiredOrFailedOrders;
 
     if (!searchQuery.trim()) return list;
 
@@ -145,7 +163,7 @@ export function MyTicketsContent() {
       );
       return matchOrderNum || matchEvent || matchTicketType;
     });
-  }, [orders, activeTab, pendingOrders, paidOrders, searchQuery]);
+  }, [orders, activeTab, pendingOrders, paidOrders, expiredOrFailedOrders, searchQuery]);
 
   function handleOpenTicket(ticket: IssuedTicketItem) {
     setSelectedTicket(ticket);
@@ -255,6 +273,17 @@ export function MyTicketsContent() {
               >
                 Sudah Bayar ({paidOrders.length})
               </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("expired")}
+                className={`rounded-md px-4 py-2 font-sans text-xs font-semibold transition-all ${
+                  activeTab === "expired"
+                    ? "bg-card text-foreground shadow-2xs"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Kedaluwarsa ({expiredOrFailedOrders.length})
+              </button>
             </div>
 
             <div className="relative w-full sm:w-64">
@@ -315,7 +344,9 @@ export function MyTicketsContent() {
                   ? "Tidak ada transaksi yang sedang menunggu pembayaran."
                   : activeTab === "paid"
                     ? "Anda belum memiliki tiket acara resmi yang aktif."
-                    : "Anda belum melakukan pemesanan tiket apa pun. Jelajahi event menarik di katalog kami."}
+                    : activeTab === "expired"
+                      ? "Tidak ada transaksi yang kedaluwarsa atau gagal."
+                      : "Anda belum melakukan pemesanan tiket apa pun. Jelajahi event menarik di katalog kami."}
               </p>
               <Link
                 href="/customers/home"
@@ -331,9 +362,13 @@ export function MyTicketsContent() {
           {!loading && !error && filteredOrders.length > 0 && (
             <div className="space-y-6">
               {filteredOrders.map((order) => {
-                const isPending = order.paymentStatus === "PENDING";
+                const isOrderExpired =
+                  order.paymentStatus === "EXPIRED" ||
+                  (order.paymentStatus === "PENDING" &&
+                    new Date(order.expiresAt).getTime() <= currentTime);
+                const isPending = order.paymentStatus === "PENDING" && !isOrderExpired;
                 const isPaid = order.paymentStatus === "PAID";
-                const isExpired = order.paymentStatus === "EXPIRED";
+                const isExpired = isOrderExpired;
                 const isFailed = order.paymentStatus === "FAILED";
 
                 const firstItem = order.orderItems[0];
@@ -344,7 +379,11 @@ export function MyTicketsContent() {
                 return (
                   <Card
                     key={order.id}
-                    className="overflow-hidden rounded-3xl border border-border bg-card shadow-xs transition-all hover:border-primary/30"
+                    className={`overflow-hidden rounded-3xl border transition-all ${
+                      isExpired || isFailed
+                        ? "border-border/60 bg-muted/20 opacity-70 grayscale hover:opacity-90 hover:grayscale-0"
+                        : "border-border bg-card shadow-xs hover:border-primary/30"
+                    }`}
                   >
                     {/* Order Top Bar: Order Number, Date, Status Badge */}
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-muted/30 px-5 py-3 sm:px-6">

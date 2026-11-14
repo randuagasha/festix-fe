@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import {
   Calendar,
   Clock,
@@ -21,9 +22,16 @@ import {
   ArrowLeft,
   XCircle,
   ShoppingCart,
+  LogIn,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogPopup,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { HomeFooter } from "@/components/home/home-footer";
 import { EventDetailSkeleton } from "@/components/event-detail/event-detail-skeleton";
@@ -69,6 +77,7 @@ function formatEventSchedule(dateString: string): {
 }
 
 export function EventDetailContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const eventId = searchParams.get("id");
 
@@ -77,6 +86,16 @@ export function EventDetailContent() {
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState<boolean>(false);
   const [showBuyModal, setShowBuyModal] = useState<boolean>(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState<boolean>(false);
+
+  function handleBuyClick() {
+    const token = Cookies.get("token");
+    if (!token) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    setShowBuyModal(true);
+  }
 
   useEffect(() => {
     if (!eventId || !eventId.trim()) {
@@ -565,7 +584,7 @@ export function EventDetailContent() {
 
                     {ticketTypes.some((tt) => tt.availableQuota > 0) && (
                       <Button
-                        onClick={() => setShowBuyModal(true)}
+                        onClick={handleBuyClick}
                         className="w-full gap-2 rounded-2xl font-sans text-sm font-semibold h-11"
                       >
                         <ShoppingCart className="size-4" />
@@ -608,6 +627,48 @@ export function EventDetailContent() {
         open={showBuyModal}
         onOpenChange={setShowBuyModal}
       />
+
+      {/* Login Prompt Dialog for Unauthenticated Users */}
+      <Dialog open={showLoginPrompt} onOpenChange={setShowLoginPrompt}>
+        <DialogPopup className="max-w-md p-6 sm:p-7 rounded-3xl">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <LogIn className="size-7" />
+            </div>
+
+            <div>
+              <DialogTitle className="font-heading text-xl font-bold text-foreground">
+                Masuk untuk Membeli Tiket
+              </DialogTitle>
+              <DialogDescription className="mt-2 font-sans text-sm text-muted-foreground leading-relaxed">
+                Anda harus masuk ke akun Anda terlebih dahulu untuk dapat memilih kategori dan membeli tiket acara ini.
+              </DialogDescription>
+            </div>
+
+            <div className="w-full space-y-2.5 pt-2">
+              <Button
+                type="button"
+                onClick={() => {
+                  setShowLoginPrompt(false);
+                  router.push("/auth/login");
+                }}
+                className="w-full h-11 rounded-2xl font-sans text-sm font-semibold shadow-xs"
+              >
+                Lanjutkan
+              </Button>
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowLoginPrompt(false)}
+                className="w-full h-11 rounded-2xl font-sans text-sm font-semibold text-muted-foreground hover:text-foreground"
+              >
+                Saya masih ingin melihat-lihat
+              </Button>
+            </div>
+          </div>
+        </DialogPopup>
+      </Dialog>
     </div>
   );
 }

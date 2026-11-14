@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import { X, Minus, Plus, Ticket, Calendar, MapPin, ShoppingCart, ImageOff } from "lucide-react";
 import {
   Dialog,
@@ -85,6 +86,13 @@ export function BuyTicketsModal({ event, open, onOpenChange }: BuyTicketsModalPr
       .map((tt) => ({ ticketTypeId: tt.id, quantity: getQuantity(tt.id) }));
 
     if (items.length === 0) return;
+
+    const token = Cookies.get("token");
+    if (!token) {
+      onOpenChange(false);
+      router.push("/auth/login");
+      return;
+    }
 
     const encodedItems = encodeURIComponent(JSON.stringify(items));
     router.push(`/transaction/detail?eventId=${event.id}&items=${encodedItems}`);

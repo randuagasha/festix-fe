@@ -69,4 +69,4 @@ export interface IssuedTicketItem {
   };
 }
 
-export type TicketFilterTab = "all" | "pending" | "paid";
+export type TicketFilterTab = "all" | "pending" | "paid" | "expired";
