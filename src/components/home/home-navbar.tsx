@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import {
-  Heart,
   LayoutDashboard,
   Menu,
+  Receipt,
+  Ticket,
   UserRound,
   X,
 } from "lucide-react";
@@ -22,6 +23,18 @@ export function HomeNavbar() {
     getMe().then(setUser);
   }, []);
 
+  const isHomeActive = pathname === "/customers/home";
+  const isEventsActive =
+    pathname === "/customers/events" || pathname.startsWith("/customers/events/");
+  const isTicketsActive =
+    pathname === "/customers/my-tickets" ||
+    pathname.startsWith("/customers/my-tickets/");
+  const isTransactionsActive =
+    pathname === "/customers/transactions" ||
+    pathname.startsWith("/customers/transactions/");
+  const isProfileActive =
+    pathname === "/profile" || pathname.startsWith("/profile/");
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -36,7 +49,7 @@ export function HomeNavbar() {
           <Link
             href="/customers/home"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/customers/home"
+              isHomeActive
                 ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }`}
@@ -47,30 +60,34 @@ export function HomeNavbar() {
           <Link
             href="/customers/events"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/customers/events" ? "font-semibold text-foreground" : "text-muted-foreground"
+              isEventsActive
+                ? "font-semibold text-foreground"
+                : "text-muted-foreground"
             }`}
           >
             Events
           </Link>
 
           <Link
-            href="/wishlist"
-            className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/wishlist" ? "font-semibold text-foreground" : "text-muted-foreground"
-            }`}
-          >
-            Wishlist
-          </Link>
-
-          <Link
             href="/customers/my-tickets"
             className={`font-sans text-sm transition-colors hover:text-foreground ${
-              pathname === "/customers/my-tickets"
+              isTicketsActive
                 ? "font-semibold text-foreground"
                 : "text-muted-foreground"
             }`}
           >
-            Tiket Saya
+            My Tickets
+          </Link>
+
+          <Link
+            href="/customers/transactions"
+            className={`font-sans text-sm transition-colors hover:text-foreground ${
+              isTransactionsActive
+                ? "font-semibold text-foreground"
+                : "text-muted-foreground"
+            }`}
+          >
+            Transactions
           </Link>
         </nav>
 
@@ -89,10 +106,14 @@ export function HomeNavbar() {
           )}
           <Link
             href="/profile"
-            className="flex items-center gap-2 border-l border-border pl-4 font-sans text-sm font-medium text-foreground hover:text-primary transition-colors"
+            className={`flex items-center gap-2 border-l border-border pl-4 font-sans text-sm font-medium transition-colors ${
+              isProfileActive
+                ? "font-semibold text-primary"
+                : "text-foreground hover:text-primary"
+            }`}
           >
             <UserRound className="size-4" />
-            Profil
+            Profile
           </Link>
         </div>
 
@@ -116,7 +137,9 @@ export function HomeNavbar() {
             <Link
               href="/customers/home"
               onClick={() => setMobileOpen(false)}
-              className="py-2.5 font-sans text-sm font-medium text-foreground"
+              className={`py-2.5 font-sans text-sm font-medium transition-colors ${
+                isHomeActive ? "font-semibold text-primary" : "text-foreground"
+              }`}
             >
               Home
             </Link>
@@ -124,34 +147,52 @@ export function HomeNavbar() {
             <Link
               href="/customers/events"
               onClick={() => setMobileOpen(false)}
-              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
+              className={`py-2.5 font-sans text-sm transition-colors ${
+                isEventsActive
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               Events
             </Link>
 
             <Link
-              href="/wishlist"
+              href="/customers/my-tickets"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-2 py-2.5 font-sans text-sm transition-colors ${
+                isTicketsActive
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
-              <Heart className="size-4" />
-              Wishlist
+              <Ticket className="size-4" />
+              My Tickets
             </Link>
 
             <Link
-              href="/customers/my-tickets"
+              href="/customers/transactions"
               onClick={() => setMobileOpen(false)}
-              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-2 py-2.5 font-sans text-sm transition-colors ${
+                isTransactionsActive
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
-              Tiket Saya
+              <Receipt className="size-4" />
+              Transactions
             </Link>
 
             <Link
               href="/profile"
               onClick={() => setMobileOpen(false)}
-              className="py-2.5 font-sans text-sm text-muted-foreground hover:text-foreground"
+              className={`flex items-center gap-2 py-2.5 font-sans text-sm transition-colors ${
+                isProfileActive
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
-              Profil
+              <UserRound className="size-4" />
+              Profile
             </Link>
           </nav>
         </div>

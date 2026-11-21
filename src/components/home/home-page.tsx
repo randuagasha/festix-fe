@@ -119,7 +119,7 @@ export function HomePage() {
         <HomeHero
           search={search}
           onSearchChange={setSearch}
-          onSearchSubmit={handleSearchSubmit}
+          events={visibleEvents}
         />
 
         <EventCategories

@@ -80,8 +80,8 @@ export function AdminTopbar() {
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-border bg-card/95 px-4 backdrop-blur-sm md:px-6">
       <div className="flex items-center gap-3">
-        <SidebarTrigger className="md:hidden" />
-        <Separator orientation="vertical" className="h-4 md:hidden" />
+        <SidebarTrigger className="-ml-1" />
+        <Separator orientation="vertical" className="h-4" />
         <div className="flex items-center gap-2">
           <h1 className="font-heading text-sm font-semibold tracking-tight md:text-base">
             {pageTitle}

@@ -66,7 +66,7 @@ export default function AdminLayout({
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider style={{ "--sidebar-width": "17rem" } as React.CSSProperties}>
       <AdminSidebar />
       <SidebarInset className="min-w-0 bg-background">
         <AdminTopbar />

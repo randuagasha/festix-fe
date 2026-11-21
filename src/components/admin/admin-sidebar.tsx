@@ -1,7 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 import {
   LayoutDashboard,
   Calendar,
@@ -12,113 +14,137 @@ import {
   Tag,
   Shield,
   ScrollText,
+  User as UserIcon,
+  House,
+  LogOut,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-
-const navGroups = [
-  {
-    label: "Overview",
-    items: [
-      {
-        label: "Dashboard",
-        href: "/admin/dashboard",
-        icon: LayoutDashboard,
-      },
-    ],
-  },
-  {
-    label: "Management",
-    items: [
-      { label: "Events", href: "/admin/events", icon: Calendar },
-      { label: "Organizers", href: "/admin/organizers", icon: Building2 },
-      { label: "Users", href: "/admin/users", icon: Users },
-      { label: "Orders", href: "/admin/orders", icon: Receipt },
-      { label: "Tickets", href: "/admin/tickets", icon: Ticket },
-      { label: "Categories", href: "/admin/categories", icon: Tag },
-      { label: "Staff", href: "/admin/staff", icon: Shield },
-    ],
-  },
-  {
-    label: "System",
-    items: [
-      { label: "Audit Logs", href: "/admin/audit-logs", icon: ScrollText },
-    ],
-  },
-];
+  WorkspaceSidebar,
+  type WorkspaceNavGroup,
+  type WorkspaceProfileMenuItem,
+} from "@/components/ui/workspace-sidebar";
+import { getMe, type CurrentUser } from "@/lib/auth-api";
+import { fetchAdminOrganizers } from "@/components/admin/organizers/organizers-api";
 
 export function AdminSidebar() {
-  const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [pendingOrganizersCount, setPendingOrganizersCount] = useState<number>(0);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadData() {
+      // Load current user profile
+      const userData = await getMe();
+      if (active && userData) {
+        setUser(userData);
+      }
+
+      // Load pending organizer count for contextual badge
+      try {
+        const response = await fetchAdminOrganizers({
+          status: "PENDING",
+          limit: 1,
+        });
+        if (active && response?.meta?.total) {
+          setPendingOrganizersCount(response.meta.total);
+        }
+      } catch {
+        // Silently ignore if offline or unauthorized
+      }
+    }
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  function handleLogout() {
+    Cookies.remove("token");
+    toast.success("Logged out successfully");
+    router.push("/auth/login");
+  }
+
+  const navGroups: WorkspaceNavGroup[] = [
+    {
+      label: "Overview",
+      items: [
+        {
+          label: "Dashboard",
+          href: "/admin/dashboard",
+          icon: LayoutDashboard,
+          exactMatch: true,
+        },
+      ],
+    },
+    {
+      label: "Management",
+      items: [
+        { label: "Events", href: "/admin/events", icon: Calendar },
+        {
+          label: "Organizers",
+          href: "/admin/organizers",
+          icon: Building2,
+          badge: pendingOrganizersCount > 0 ? pendingOrganizersCount : undefined,
+          badgeVariant: "amber",
+        },
+        { label: "Users", href: "/admin/users", icon: Users },
+        { label: "Orders", href: "/admin/orders", icon: Receipt },
+        { label: "Tickets", href: "/admin/tickets", icon: Ticket },
+        { label: "Categories", href: "/admin/categories", icon: Tag },
+        { label: "Staff", href: "/admin/staff", icon: Shield },
+      ],
+    },
+    {
+      label: "System",
+      items: [
+        { label: "Audit Logs", href: "/admin/audit-logs", icon: ScrollText },
+      ],
+    },
+  ];
+
+  const profileMenuItems: WorkspaceProfileMenuItem[] = [
+    {
+      label: "My Profile",
+      icon: UserIcon,
+      onClick: () => router.push("/profile"),
+    },
+    {
+      label: "Go to Home",
+      icon: House,
+      onClick: () => router.push("/"),
+    },
+    {
+      label: "Log out",
+      icon: LogOut,
+      destructive: true,
+      onClick: handleLogout,
+    },
+  ];
+
+  const displayName =
+    user?.fullName || (user?.email ? user.email.split("@")[0] : "Admin");
 
   return (
-    <Sidebar className="border-r border-border bg-card">
-      <SidebarHeader className="flex h-14 flex-row items-center border-b border-border px-4">
-        <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary shadow-xs">
-            <span className="font-heading text-sm font-bold text-primary-foreground">
-              T
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-heading text-sm font-bold tracking-tight text-foreground">
-              Tixora
-            </span>
-            <span className="font-sans text-[10px] text-muted-foreground">
-              Admin Platform
-            </span>
-          </div>
-        </Link>
-      </SidebarHeader>
-
-      <SidebarContent className="px-2 pt-3">
-        {navGroups.map((group) => (
-          <SidebarGroup key={group.label}>
-            <SidebarGroupLabel className="px-3 font-sans text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/80">
-              {group.label}
-            </SidebarGroupLabel>
-            <SidebarGroupContent className="mt-1">
-              <SidebarMenu>
-                {group.items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive =
-                    pathname === item.href ||
-                    (item.href !== "/admin/dashboard" &&
-                      pathname.startsWith(item.href));
-
-                  return (
-                    <SidebarMenuItem key={item.href}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        tooltip={item.label}
-                        className={cn(
-                          "h-9 gap-3 rounded-lg px-3 font-sans text-xs font-medium transition-colors",
-                          isActive
-                            ? "bg-primary/10 font-semibold text-primary hover:bg-primary/15 hover:text-primary [&>svg]:text-primary"
-                            : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
-                        )}
-                        render={<Link href={item.href} />}
-                      >
-                        <Icon className="size-4" />
-                        <span>{item.label}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
-    </Sidebar>
+    <WorkspaceSidebar
+      workspaceType="admin"
+      brand={{
+        title: "Tixora",
+        subtitle: "Admin Workspace",
+        href: "/admin/dashboard",
+        logoIcon: Shield,
+      }}
+      navGroups={navGroups}
+      user={{
+        name: displayName,
+        email: user?.email || "admin@tixora.com",
+        subtitle: user?.role || "ADMIN",
+        avatar: user?.avatar,
+      }}
+      profileMenuItems={profileMenuItems}
+    />
   );
 }
